@@ -12,3 +12,4 @@ scripts/ 下的脚本为原创编写，未复制第三方源码。
 - lewislulu/html-ppt-skill（MIT）https://github.com/lewislulu/html-ppt-skill ：主题 token 结构（glassmorphism、blueprint、pitch-deck-vc、swiss-grid）。
 - anthropics/skills frontend-design（Apache-2.0）https://github.com/anthropics/skills/tree/main/skills/frontend-design ：背景要有氛围和层次、避免模板化默认审美。
 - courtsimas/glass-lens（MIT）https://github.com/courtsimas/glass-lens 、LeonardSEO/liquid-glass-react（MIT）https://github.com/LeonardSEO/liquid-glass-react 、dpawlikowski/liquid-glass（MIT）https://github.com/dpawlikowski/liquid-glass ：feDisplacementMap 折射、滤镜作用于背景副本、边缘色散。
+- nextlevelbuilder/ui-ux-pro-max-skill（MIT）https://github.com/nextlevelbuilder/ui-ux-pro-max-skill ：styles.csv 中 Neumorphism、Claymorphism、Neubrutalism、Material 3、Aurora、Editorial Grid、Liquid Glass 等风格的关键词与配色参考。

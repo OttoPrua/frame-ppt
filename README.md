@@ -51,9 +51,9 @@ Then just say: **`frame: a 10-page training deck on running good meetings`**
 ![consulting](docs/images/showcase-consulting.png)
 ![tech](docs/images/showcase-tech.png)
 
-**7 style packs**, plus brand colors or a reference image
+**13 style packs on the same slide** (full-size images in [docs/images/styles/](docs/images/styles/)), plus brand colors or a reference image
 
-![style packs](docs/images/style-packs.png)
+![style packs](docs/images/style-gallery.png)
 
 Export: editable PPTX (each slide embeds its SVG with a PNG fallback) or a single-file HTML.
 

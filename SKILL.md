@@ -183,6 +183,7 @@ python3 scripts/svg2pptx.py out.pptx svg/*.svg
 ---
 
 ## 附录 A：风格包
+共 13 个：A1 swiss · A2 apple-dark · A3 minimalism · A4 consulting · A5 tech-dark · A6 skeuo · A7 glass · A8 editorial · A9 material3 · A10 neumorphism · A11 claymorphism · A12 neo-brutalism · A13 aurora。不确定时：培训/通用选 swiss 或 minimalism；汇报/咨询选 consulting；发布会选 apple-dark；品牌故事选 editorial；年轻/活动选 claymorphism 或 neo-brutalism；科技产品选 tech-dark、glass 或 aurora。
 每个风格包包含：调色板、图表配色、设计哲学、背景处理、装饰语言、颜色使用规则，以及该做和不该做的事。
 （风格包结构和 minimalism、consulting 两个预设 adapted from zhx47/ppt-agent (Apache-2.0)）
 
@@ -240,22 +241,60 @@ python3 scripts/svg2pptx.py out.pptx svg/*.svg
 ### A7 `glass`：磨砂玻璃 / Liquid Glass
 **核心：玻璃好不好看取决于它后面有什么。** 背景必须是清晰、有结构的构图（可辨认的几何形状），玻璃质感来自对背景的折射、磨砂散射和边缘光，而不是一团模糊光斑。
 - 背景构图（全部放进 `<defs><g id="scene">`，页面先 `<use href="#scene"/>`）：深靛底 `#0A0F2C → #12082A` + 40px 细网格（白 0.07）；一个大"落日"圆（`#FFC56B → #FF5E8A → #B23CFF`），用 4 条逐渐加粗的深色横条切开；两条斜向彩带（`#22D3EE → #3B82F6`、`#8B5CF6 → #EC4899`，旋转 −18°）；同心圆环（`#7DD3FC` 描边 0.55）；一个粉紫三角形；一个小黄圆。形状要分布在卡片后面和卡片之间，让每张卡透出不同颜色。
-- 玻璃卡分层（从下到上）：
-  1. 投影：`feDropShadow dy=22 std=24`，色 `#02030F` 0.55。
-  2. **磨砂体**：clip 到卡片圆角矩形，放 `<use href="#scene" filter="url(#frost)">`；`frost` = `feTurbulence fractalNoise baseFrequency=".006 .009"` → `feDisplacementMap scale=16`（轻微扭曲＝折射感）→ `feGaussianBlur std=12` → `saturate 1.5`；再叠 `#0B1030` 0.30–0.38 暗层保证白字对比度。
-  3. **边缘折射**：用 evenodd 路径把 clip 限制在外缘 14px 的环带里，环带内放放大 1.12 倍（以卡片中心缩放）的背景副本 + `blur 3` + 亮度 ×1.35，再叠白 0.10。效果是边缘的背景被"弯折、放大、提亮"，像真玻璃厚边。
-  4. **内部光**：斜向白色渐变（左上 0.34 → 中 0.06 → 右下 0.14）。
-  5. **色散**：两条错位 1px 的描边，粉 `#FF6FB5` 0.45 向左、青 `#67E8F9` 0.45 向右下。
-  6. **亮边**：2px 白色渐变描边（左上 1.0 → 0.25 → 0.12 → 右下 0.8），内侧再加 1px 白 0.18 的内缘线。
-  7. **高光**：顶边一条 2px 白色横向渐变（两端透明，30% 处最亮），长度为卡宽 55%。
+- 玻璃卡分层（从下到上）——**边缘克制、偏实体材质**：
+  1. 投影：`feDropShadow dy=22 std=24`，色 `#02030F` 0.55，让玻璃像一块有重量的厚板。
+  2. **磨砂体**：clip 到卡片圆角矩形，放 `<use href="#scene" filter="url(#frost)">`；`frost` = `feTurbulence fractalNoise baseFrequency=".006 .009"` → `feDisplacementMap scale=16` → `feGaussianBlur std=12` → `saturate 1.5`；再叠 `#0B1030` 0.30–0.38 暗层保证白字对比度。
+  3. **轻微边缘折射**：evenodd 环带（外缘 10px）里放放大 1.05 倍的背景副本 + `blur 3` + 亮度 ×1.35，再叠白 0.06。只要隐约的厚度感。
+  4. **内部光**：斜向白色渐变（左上 0.22 → 中 0.04 → 右下 0），像光从左上打进玻璃。
+  5. **厚度**：卡片底部 40px 从透明到 `#02030F` 0.35 的渐变（clip 在卡片内），模拟玻璃板底边的暗部。
+  6. **唯一的亮边**：1.5px 白色渐变描边（左上 0.7 → 0.18 → 右下 0.1）。
+  - 不加色散描边、不加顶部高光条、不加第二道内缘线：边缘效果只保留一处。
 - 文字：标题白色并带投影；大数字填充 `#FFFFFF → #A5F3FC` 并发光；正文 ≥18，次级 `#E4E8FF`。
 - 卡片：圆角 24–26，间距 24。
 - 参考：Liquid Glass 的 feDisplacementMap 做法（courtsimas/glass-lens、LeonardSEO/liquid-glass-react、dpawlikowski/liquid-glass，MIT），"滤镜作用于背景副本而不是 backdrop"的思路；只借鉴思路，代码为原创。
-- 不该做：背景只有模糊光斑（玻璃会显得发灰发平）；displacement scale 过大（>30 会出现蠕虫状噪点）；正文压在高亮形状上而没有暗层；浅色背景上用白玻璃。
+- 不该做：背景只有模糊光斑（玻璃会显得发灰发平）；边缘效果叠太多（色散+高光条+双描边会显得廉价）；displacement scale 过大（>30 会出现蠕虫状噪点）；正文压在高亮形状上而没有暗层；浅色背景上用白玻璃。
 
-**A6/A7 的检查与导出**：
+### A8 `editorial`：杂志 / 编辑排版
+- 调色板：纸色 `#F7F3EC`，墨黑 `#111111`，次级 `#3F3A33` / `#6B6257`，强调砖红 `#8A2B1F`，分隔线 `#CFC6B8`。
+- 版式：顶部刊头（小号大写字距 3 的栏目名，砖红）+ 3px+1px 双线；超大衬线标题（Noto Serif CJK，88–96，weight 900）配一行砖红副题；右侧竖线隔出引语区（大号砖红引号 “ + 衬线引文 + 署名）；下方三栏用细竖线分隔，每栏 "01" 编号 + 衬线小标题 34 + 正文 18，背后一个 150px 的灰色巨号数字（opacity 0.08）。底部细线 + 来源 + 页码。
+- 不用卡片底色，靠线和留白组织；适合观点类、品牌故事、年度回顾。
+- 不该做：圆角、阴影、渐变、超过 1 种强调色。
+
+### A9 `material3`：Material 3 / Material You
+- 调色板（基于种子色生成的 tonal palette）：Surface `#FFFBFE`，Surface Container `#F3EDF7`，Primary `#6750A4`，Primary Container `#EADDFF`，Secondary Container `#E8DEF8`，Tertiary Container `#FFD8E4`，On Surface `#1C1B1F`，次级 `#49454F`，Outline `#79747E`。
+- 形状：大圆角 28（卡片）、全圆角胶囊（标签 chip）；背景角落放一个 Primary Container 色的有机大形状（贝塞尔曲线）和一个 Tertiary 圆。
+- 卡片：Surface Container 填充 + elevation 1（`dy=1 std=1.5` 0.15 + `dy=4 std=6` 0.08）；右上角放一个 Container 色的圆形"图标位"，三张卡分别用 Secondary / Tertiary / 薄荷色调。重点卡用 Primary 实底白字。
+- 字号：标题 42（weight 600），大数字 60（weight 500，Primary），正文 18。
+- 不该做：硬阴影、尖角、饱和度过高的颜色、多个种子色。
+
+### A10 `neumorphism`：新拟态（Soft UI）
+- 调色板：底色 = 卡片色 `#E0E5EC`（单色），凹槽 `#D1D9E6`，文字 `#3D4852` / `#6B7280`，强调紫 `#6C63FF`。
+- 凸起卡：同底色圆角 28，滤镜叠两层投影：左上白光 `dx=-10 dy=-10 std=12 #FFFFFF 0.9` + 右下暗影 `dx=12 dy=12 std=14 #A3B1C6 0.75`（用 feMerge 叠在原图下方）。
+- 凹陷区（重点卡内嵌）：内阴影滤镜（`feFlood` → `feComposite operator="out"` → blur 5 → offset 4,4 → 再 `in` 回原形状）。
+- 光源统一左上；对比度偏低，所以正文 ≥18，关键数字用强调紫。
+- 不该做：彩色底、细边框、深色模式、小字号浅灰字。
+
+### A11 `claymorphism`：黏土风
+- 调色板：画布 `#F4F1FA`，糖果色卡片 `#C4B5FD` 薰衣草 / `#FDBCB4` 蜜桃 / `#A7F3D0` 薄荷 / `#FDE68A` 奶黄，重点卡 `#7C3AED`，文字 `#332F3A`。
+- 卡片：大圆角 36；外投影 `dy=18 std=16 #5B3FA8 0.28`；内高光（白 0.8，offset 6,8，blur 8）+ 内暗部（`#3B1F7A` 0.25，offset −6,−10，blur 10），让卡片像充气的软黏土。
+- 标签用深色胶囊；大数字粗黑（weight 900，比常规大 8）；背景角落放两个半透明大圆点缀。
+- 不该做：尖角、细线条、写实阴影、超过 4 种糖果色。
+
+### A12 `neo-brutalism`：新粗野主义
+- 调色板：奶油底 `#FFFDF5`，纯黑 `#000000`，亮黄 `#FFD93D`，热红 `#FF6B6B`，柔紫 `#C4B5FD`。
+- 卡片：直角、3px 黑描边，右下 8px 实心黑色硬阴影（就是偏移 8,8 的黑色矩形，无模糊）；重点卡黑底黄字。
+- 背景：40px 竖线网格（黑 0.06）。标签是带黑框的红色小矩形；标题 44 weight 900；大数字 weight 900。
+- 不该做：渐变、圆角、柔和阴影、半透明。
+
+### A13 `aurora`：极光 / 渐变网格
+- 背景：`#070B1F` 深底 + 4 个大椭圆（`#22D3EE`、`#8B5CF6`、`#EC4899`、`#10B981`，旋转 ±10°）整体 `feGaussianBlur std=70`，形成流动的极光；不要压到正文区域的正下方。
+- 卡片：`#0B1026` 0.45–0.62 半透明深卡 + 白 0.16 细描边 + `dy=16 std=22` 黑 0.35 投影（深色玻璃但不做磨砂和边缘效果，比 `glass` 轻）。
+- 强调：`#7DD3FC → #F0ABFC` 渐变用于大数字和短条。文字白 / `#CBD5E1`。
+- 不该做：极光饱和度过高压住文字、在浅色底上用。
+
+**A6–A13 的检查与导出**：
 - `check_render.py` 会把 `fill="none"` 或 `opacity<1` 的装饰矩形（高光、斜面、缝线框）排除在"卡片"之外，不会误报溢出。
-- 这两个风格包是渐变色强调，**不要传 `--accent`**（面积检查只适用于纯色强调色的风格包）；改为看 PNG 目视确认强调不过量。
+- 这些风格包多为渐变或多色强调，**不要传 `--accent`**（面积检查只适用于纯色强调色的风格包）；改为看 PNG 目视确认强调不过量。
 - 导出 PPTX 时 PNG 回退由 rsvg 渲染，滤镜/渐变/模糊都会如实呈现；PowerPoint 对 SVG 滤镜支持有限，原生 SVG 层可能显示得比 PNG 简化，重要场合以 PNG 渲染效果为准、导出后在目标软件里打开检查。
 
 **品牌或参考图**：用户有品牌就用品牌官方主色替换强调色。给了参考图的话，先把参考图的配色、字号层级和卡片样式分析成以上格式的文字规则再用。

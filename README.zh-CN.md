@@ -51,9 +51,9 @@ git clone https://github.com/ottoprua/frame-ppt.git ~/.claude/skills/frame-ppt
 ![consulting](docs/images/showcase-consulting.png)
 ![tech](docs/images/showcase-tech.png)
 
-**7 个风格包**，也支持品牌色或参考图
+**13 个风格包，同一页内容对比**（单张大图在 [docs/images/styles/](docs/images/styles/)），也支持品牌色或参考图
 
-![风格包](docs/images/style-packs.png)
+![风格包](docs/images/style-gallery.png)
 
 导出：可编辑的 PPTX（每页内嵌 SVG，并附 PNG 回退），或单文件 HTML。
 
