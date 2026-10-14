@@ -22,7 +22,7 @@ git clone https://github.com/ottoprua/frame-ppt.git ~/.claude/skills/frame-ppt
 
 装好之后，对 Agent 说一句 **`frame`** 就能开始。
 
-安装时 Agent 会问你要不要单独接一个生图模型来画插画；跳过的话，frame-ppt 只用本地生成器和内置 SVG，不会调用付费接口。
+安装时 Agent 会问你插画用什么来画：Agent 自带的生图（Codex、Grok）、本机已登录的 Codex（适合 Hermes、Openclaw），或者单独的 API key；跳过的话，frame-ppt 只用本地生成器和内置 SVG，不会调用付费接口。
 
 ![流程](docs/images/readme/process-zh.png)
 

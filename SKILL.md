@@ -19,23 +19,42 @@ description: >-
 ## 安装 / 部署（给负责安装的 Agent 看）
 用户说「帮我安装这个 PPT skill：https://github.com/ottoprua/frame-ppt」之类的话时：
 1. 把仓库克隆或复制到本机的 skills 目录（例如 `~/.claude/skills/frame-ppt`）。
-2. **装好后必须在对话里问用户一次**，要不要给第 6.5 步的插画 / 具象槽位单独配一个生图模型。用选项来问：
-   > frame-ppt 装好了。第 6.5 步可以给 PPT 生成插画和主视觉，要不要单独配一个生图模型？
-   > A. OpenAI GPT Image / DALL·E（需要你自己的 API key，放在环境变量里）
-   > B. 本地 ComfyUI / Stable Diffusion WebUI（告诉我地址，例如 http://127.0.0.1:8188）
-   > C. 你已经在用的命令行工具（例如 Midjourney 或其他生图 CLI，告诉我命令）
-   > D. 交给另一个指定的 Agent 来生成（告诉我是哪个）
-   > E. 不配，先用本地（背景用本地生成器，插画位用内置 SVG，不产生任何费用）
+2. **先判断自己是什么宿主**，再推荐对应的默认项：
+   - 自己是 **Codex**，或者是 **Grok**（Grok Bot / xAI Grok），而且手上有自带的生图工具：推荐 A。
+   - 自己是 **Hermes、Openclaw** 这类调度或终端型宿主：先探测本机有没有已登录的 Codex。看 `codex` 命令是否存在（`command -v codex`），再看登录状态（例如 `codex login status`；不确定就跑一次不产生费用的小命令）。
+     - 有 Codex 并且已登录：推荐 B，用它带的 GPT Image。
+     - 没有或没登录：推荐 C，不要假装 B 能用。
+   - 判断不出来：不推荐任何一项，直接问。
+3. **装好后必须在对话里问用户一次**（即使已经推荐了默认项也要问），用选项来问：
+   > frame-ppt 装好了。第 6.5 步可以给 PPT 生成插画和主视觉，要不要单独配一个生图方式？（推荐：X，因为……）
+   > A. 用当前 Agent 自带的生图（Codex 本体 / Grok 自带生图等，能直接调就用）
+   > B. 走本机已登录的 Codex（适合 Hermes、Openclaw 等：用 Codex AU 里的 GPT Image）
+   > C. 单独的图像 API key（OpenAI GPT Image / DALL·E 等，key 放环境变量，config 只记变量名）
+   > D. 本地 ComfyUI / WebUI（填地址，例如 http://127.0.0.1:8188）
+   > E. 交给另一个指定的 Agent（告诉我是哪个）
+   > F. 不配，先用本地（genbg + 内置 SVG，不产生任何费用）
    
-   用户也可以说别的方案，照样记下来。
-3. 根据回答写 `config/image-provider.json`（相对 skill 根目录）。仓库里有模板 `config/image-provider.example.json`，这个文件已在 .gitignore 里，不会被提交。
-   - 选了 A–D 或其他方案时这样写，`kind` 取 `openai-image | comfyui | agent | cli | other`：
-     ```json
-     {"enabled": true, "kind": "openai-image", "notes": "用户说明，例如模型名、Agent 名", "command_or_endpoint": "接口地址 / 命令 / Agent 名", "secret_env": "OPENAI_API_KEY", "default_quality": "medium"}
-     ```
-   - **不要把 API key 写进这个文件，也不要编造 key。** 告诉用户把密钥放进环境变量（例如 `export OPENAI_API_KEY=…` 写进 shell 配置），文件里只记录变量名 `secret_env`。
-   - 选 E 或跳过时，写 `{"enabled": false}`，或者不写这个文件。**文件不存在或 `enabled: false` 都表示只用本地工具。**
-4. 以后用户说「给 frame-ppt 配生图模型」「换个生图模型」「关掉生图」时，重新问一遍上面的选项，然后改写这个文件。
+   - 用户说了别的方案（例如自己的生图 CLI），记成 `cli` 或 `other`。
+   - 用户选 B 但探测发现 Codex 不可用时：说清楚原因，改为提供 C 或 F，不要静默失败。
+4. 根据回答写 `config/image-provider.json`（相对 skill 根目录）。模板是 `config/image-provider.example.json`，这个文件已在 .gitignore 里，不会被提交。
+   ```json
+   {"enabled": true, "kind": "codex-local", "notes": "Hermes 上用本机已登录的 Codex 调 GPT Image", "command_or_endpoint": "codex", "secret_env": "", "default_quality": "medium"}
+   ```
+   `kind` 与选项对应如下：
+
+   | 选项 | kind | command_or_endpoint 填什么 | secret_env |
+   |---|---|---|---|
+   | A | `host-native` | 宿主名，例如 `codex` / `grok` | 留空，用宿主自己的登录 |
+   | B | `codex-local` | 本机调用 Codex 的命令，例如 `codex` | 留空，用 Codex 已有的登录 |
+   | C | `openai-api` | 模型名，例如 `gpt-image-2.5-flare` | 环境变量名，例如 `OPENAI_API_KEY` |
+   | D | `comfyui` | 接口地址 | 需要的话写变量名 |
+   | E | `agent` | 目标 Agent 名 | — |
+   | 其他 | `cli` / `other` | 命令或说明 | 需要的话写变量名 |
+   | F | 写 `{"enabled": false}` 或不写文件 | — | — |
+
+   - **不要把 API key 写进这个文件，也不要编造 key。** 选 C 时告诉用户把 key 放进环境变量（例如在 shell 配置里 `export OPENAI_API_KEY=…`），文件里只记变量名。
+   - **文件不存在或 `enabled: false` 都表示只用本地工具。**
+5. 以后用户说「给 frame-ppt 配生图模型」「换个生图模型」「关掉生图」时，重新判断宿主、重新问上面的选项，然后改写这个文件。
 
 ---
 
@@ -187,7 +206,12 @@ python3 scripts/tokens.py <风格包> --accent "#品牌主色" -o tokens.json   
 **4. 派发**（按文件路径交接，不传图片内容）：
 - **派发任何具象 / 图标槽位之前，先读 `config/image-provider.json`（相对 skill 根目录）。**
   - 文件不存在或 `enabled: false`：**不调用任何外部或付费生图模型。** 背景按 `generate` 用本地生成器，具象槽位直接用 `fallback`（内置 SVG）。项目中途可以问用户一次「要现在配生图模型吗？」（选项同安装时）；用户不要就不再问。
-  - `enabled: true`：按文件里的 `kind`、`command_or_endpoint`、`notes` 调用对应的工具或 Agent，密钥从 `secret_env` 指定的环境变量读取。
+  - `enabled: true` 时按 `kind` 派发：
+    - `host-native`：直接用当前 Agent 自带的生图工具（Codex / Grok 本体），不需要额外的 key。如果换了宿主、当前宿主没有生图工具，提醒用户重新配置，本次走 fallback。
+    - `codex-local`：按 `command_or_endpoint` 和 `notes` 记录的方式调用本机已登录的 Codex，让它用 GPT Image 生成，并写到 `write_to` 路径。Codex 不可用或没登录时走 fallback，并告诉用户。
+    - `openai-api` / `comfyui` / `cli` / `other`：按记录的模型、地址或命令调用；密钥只从 `secret_env` 指定的环境变量读取，变量为空就走 fallback 并告诉用户。
+    - `agent`：把 `requests/<slot>.json` 的路径交给指定的 Agent。
+  - 不管哪种 `kind`，都不要编造 key，也不要读取或复制别人的登录凭据文件。
 - **付费图像 API 调用前，必须把清单（张数、尺寸、质量、预计费用和耗时）给用户确认。** 默认 `quality: medium`，先出一张定调图，用户满意后再出其余。
 - 交给其他代理时，任务只写一句「读取 `requests/<slot>.json`，按要求生成，写到 `write_to` 路径（先写 .tmp 再改名），同目录写 `<slot>.meta.json`（工具、模型、参数、许可说明）」。
 - 单张超时 3 分钟，最多重试 2 次（重试时附上次被拒原因），全部封顶 10 分钟。超时或失败不等待，直接走 fallback。

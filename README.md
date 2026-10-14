@@ -22,7 +22,7 @@ git clone https://github.com/ottoprua/frame-ppt.git ~/.claude/skills/frame-ppt
 
 Then say **`frame`** to your agent to start.
 
-After installing, the agent will ask whether to connect a separate image-generation model for illustrations. If you skip it, frame-ppt uses its local generators and built-in SVG fallbacks and never calls paid APIs.
+After installing, the agent will ask how to generate illustrations: its own built-in image tool (Codex, Grok), the Codex session already signed in on your machine (handy for Hermes or Openclaw), or a separate API key. If you skip it, frame-ppt uses its local generators and built-in SVG fallbacks and never calls paid APIs.
 
 ![Process](docs/images/readme/process-en.png)
 
