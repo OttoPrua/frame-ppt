@@ -14,6 +14,7 @@ description: >-
 - `check_render.py`：检查 SVG（XML、viewBox、文字溢出估算、安全区、强调色面积），用 rsvg 渲染 PNG，再拼一张缩略总览图。
 - `svg2pptx.py`：把 SVG 导出成 .pptx，每页嵌入原生 SVG 并附 PNG 回退。
 - `tokens.py`：给 33 个风格包生成配色角色 token（tokens.json），可换品牌主色并自动修复对比度（见附录 D）。
+- `assets.py` / `genbg.py` / `recolor.py`：第 6.5 步素材委派（可选）：写提示词、生成背景、回填返回图并重着色到 tokens；预设在 `styles/asset-prompts.json`。
 
 ---
 
@@ -136,6 +137,47 @@ python3 scripts/tokens.py <风格包> --accent "#品牌主色" -o tokens.json   
 如果发现非改布局不可，就退回第 5 步改初稿，不要在设计阶段偷偷改。
 建议用脚本实现：把版面写成数据，初稿和设计稿用同一份版面、不同主题渲染。这样"不改布局"是靠代码保证的。
 
+## 第 6.5 步：素材委派（可选，默认关闭）
+只有用户明确要插画、主视觉、产品线稿、动感背景，或者 state.json 里写了 `"assets": "delegate"` / `"generate"` 时才做。关闭或全部失败时，产物和不做这一步完全一样。
+- `generate`（轻量档）：只用本地生成器做背景和装饰（点线网络 / 流场线 / 半调点阵），零成本、几秒完成。
+- `delegate`：具象插画、图标也交给其他代理或工具（例如 Codex + 图像 API），按文件路径交接。
+
+**1. 留槽位**：设计稿里需要素材的地方写一个空组 `<g data-slot="hero-01"/>`。槽位不能挡住正文；背景槽位放在文字之前，具象槽位放在文字之后。
+
+**2. 写 manifest**（`assets/manifest.json`，路径都相对它所在目录）：
+```json
+{"pack": "big-type", "subject": "一辆虚构品牌电动轿车的侧面", "tokens": "../tokens.json", "slots": [
+  {"id": "bg-01", "svg": "../svg/01.svg", "type": "background", "z": 0, "bbox": {"x":0,"y":0,"w":1280,"h":720},
+   "opacity": 0.6, "provider": {"kind": "generator", "seed": 11}, "output": "bg-01.svg", "fallback": {"kind": "none"}},
+  {"id": "hero-01", "svg": "../svg/01.svg", "type": "figurative", "z": 2, "bbox": {"x":560,"y":270,"w":680,"h":340},
+   "provider": {"kind": "agent"}, "output": "returned/hero-01.png",
+   "fallback": {"kind": "builtin-svg", "snippet": "<line x1=\"600\" y1=\"560\" x2=\"1200\" y2=\"560\" stroke=\"#FF4A1C\" stroke-width=\"4\"/>"}}]}
+```
+- `type`：`figurative` 具象 / `icon` 图标 / `decorative` 装饰 / `background` 背景；`provider.kind`：`generator`（本地）/ `agent` / `human`。
+- 每个槽位都必须有 `fallback`，通常就是原来设计稿里的内置几何装饰。
+- 可选字段：`subject`（只改这一个槽位的主题）、`prompt`（代理改写好的提示词，脚本不会覆盖）、`recolor`（`false` 表示不重着色，或者 `{"mode":"duo","roles":["text","accent"]}`）。
+
+**3. 写提示词**：`python3 scripts/assets.py prompt assets/manifest.json`
+- 提示词 = `styles/asset-prompts.json` 里该风格包的预设（外观 + 单色出图要求）+ **项目主题**（来自 brief：产品、行业、人物）。例如用 big-type 做电动车发布会，得到的就是「车辆侧面单线条线稿」；用 risograph 做人物访谈，就是「黑白网点剪贴人像」。
+- 预设只是起点：先看页面要表达什么，再改写 `prompt`（换主体、角度、构图）。不要照抄预设，也不要把风格包名写进提示词。
+- 一律要求**单色**（黑线稿、黑剪影或黑白网点，白底或透明底）。颜色由第 5 点统一处理，所以提示词里不写色值。
+- 脚本会为每个槽位写 `requests/<slot>.json`（提示词、尺寸、透明 PNG、回写路径），并打印清单。
+
+**4. 派发**（按文件路径交接，不传图片内容）：
+- **付费图像 API 调用前，必须把清单（张数、尺寸、质量、预计费用和耗时）给用户确认。** 默认 `quality: medium`，先出一张定调图，用户满意后再出其余。
+- 交给其他代理时，任务只写一句「读取 `requests/<slot>.json`，按要求生成，写到 `write_to` 路径（先写 .tmp 再改名），同目录写 `<slot>.meta.json`（工具、模型、参数、许可说明）」。
+- 单张超时 3 分钟，最多重试 2 次（重试时附上次被拒原因），全部封顶 10 分钟。超时或失败不等待，直接走 fallback。
+
+**5. 回填与重着色**：`python3 scripts/assets.py compose assets/manifest.json`
+- 生成器槽位用 `scripts/genbg.py` 就地生成，颜色只取 tokens.json，`seed` 可复现。
+- 返回图先过 `scripts/recolor.py`：把墨迹映射成 tokens 的角色色（`line`/`flat` → 一个角色，`duo` → 深色调和中间调两个角色），白底变透明。输出只含 token 精确色值，能通过调色板检查。
+- 然后校验透明背景，以 `<image data-asset-type=… data-recolored=…>` 写进槽位。PPTX 里在 PowerPoint 中「转换为形状」后，它就是一张独立图片，可以单独替换。
+- 缺图或不合格时写入 fallback。脚本可以重复运行，每次都会覆盖同一个槽位。
+- 状态写回 manifest：`requested | composited | fallback:<原因>`。
+
+**6. 检查**：照常走第 7 步。具象图、图标槽位**只有在没有重着色时**（`data-recolored="0"`，例如用户给的照片）才放宽「调色板外颜色」和色相数检查；重着色过的照常严格检查。
+交付时把所有 `meta.json` 汇总成 `ASSETS.md`（来源、模型、许可），提示用户生成素材的使用条款以服务方为准。
+
 ## 第 7 步：SVG 检查与看图修改
 ```
 python3 scripts/check_render.py svg/ --out png --sheet contact_sheet.png --colors tokens.json
@@ -187,7 +229,7 @@ python3 scripts/svg2pptx.py out.pptx svg/*.svg
 每完成一步就更新，长对话或换助手接手时，先读这个文件：
 ```json
 {
-  "project": "如何做好PPT", "mode": "topic", "style_pack": "swiss", "tokens": "tokens.json",
+  "project": "如何做好PPT", "mode": "topic", "style_pack": "swiss", "tokens": "tokens.json", "assets": "off",
   "gates": {"requirements": "confirmed", "outline": "confirmed", "research": "skipped", "draft": "ready", "design": "ready"},
   "pages": {
     "05": {"title": "金字塔原理：结论先行", "research": "ready", "draft": "ready", "design": "stale"}
@@ -206,6 +248,7 @@ python3 scripts/svg2pptx.py out.pptx svg/*.svg
 ---
 
 ## 附录 A：风格包
+每个风格包的素材提示词预设（第 6.5 步用）见 `styles/asset-prompts.json`；拼贴/剪报类效果（黑白剪贴人像、网点、报纸印刷）用 editorial、risograph、pop-psychedelic、manga。
 共 33 个：通用 13 个（A1–A12、A27 apple-hig），行业与潮流 20 个（A13–A26、A28–A33）。
 
 **按场景 / 行业选风格包**：

@@ -34,6 +34,8 @@ git clone https://github.com/ottoprua/frame-ppt.git ~/.claude/skills/frame-ppt
 
 ![风格包一览](docs/images/style-gallery-zh.png)
 
+**可选：插画与生成式背景（第 6.5 步，默认关闭）。** 页面上可以给插画、产品线稿、背景留出槽位。点线网络、流场线、半调点阵这类背景直接在本地按配色 token 生成；插画通过文件清单交给其他 Agent 或图像工具。每个风格包都有一套提示词预设，会和你的项目主题组合起来用；付费的图像调用一定先问你。返回的单色图会自动重着色到风格包的配色；缺图或检查不通过时，退回内置 SVG。
+
 ---
 
 Apache-2.0 License · 致谢与第三方许可见 [NOTICE.md](NOTICE.md)

@@ -34,6 +34,8 @@ There are 33 style packs, each with its own signature layout and theme. All bran
 
 ![Style packs](docs/images/style-gallery-en.png)
 
+**Optional: illustrations and generative backgrounds (step 6.5, off by default).** frame-ppt can leave slots on a slide for illustrations, product line art or backgrounds. Backgrounds such as dot networks, flow lines and halftone are generated locally from the deck's colour tokens. Illustrations can be handed to another agent or image tool through a file manifest. Each style pack has a prompt preset that is combined with your project's subject, and paid image calls always need your confirmation first. Returned single-colour art is recoloured to the pack's palette. If an image is missing or fails a check, the slide falls back to the built-in SVG.
+
 ---
 
 Apache-2.0 License · Credits and third-party notices in [NOTICE.md](NOTICE.md)

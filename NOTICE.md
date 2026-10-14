@@ -35,3 +35,10 @@ scripts/ 下的脚本为原创编写，未复制第三方源码。
 - 60-30-10 面积比例：通用设计经验法则。
 - 未采用 APCA（Myndex/apca-w3，自定义许可，非 MIT/Apache）。
 
+
+## 素材委派（第 6.5 步，scripts/assets.py、genbg.py、recolor.py、styles/asset-prompts.json）
+代码为原创，只依赖 Python 标准库和 Pillow；以下项目只借鉴思路，未拷贝代码：
+- VincentGarreau/particles.js（MIT）https://github.com/VincentGarreau/particles.js 、tsparticles/tsparticles（MIT）https://github.com/tsparticles/tsparticles ：点线网络（plexus）背景的视觉思路。
+- anthropics/skills algorithmic-art（Apache-2.0）https://github.com/anthropics/skills/tree/main/skills/algorithmic-art ：种子可复现的流场/粒子生成思路。
+- OpenAI 图像生成指南 https://developers.openai.com/api/docs/guides/image-generation ：透明背景 PNG、尺寸约束（仅为接口参数说明）。
+- 生成素材的使用条款以各生成服务为准；示例中的品牌、人物均为虚构，测试图为本地程序绘制。

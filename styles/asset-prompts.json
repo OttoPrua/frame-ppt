@@ -1,0 +1,547 @@
+{
+ "_说明": "每个风格包的素材提示词预设。只是起点：代理要把它和项目主题（brief 里的产品、行业、受众）组合，按页面需要改写，不要照抄。所有具象图都先要单色输出，再用 recolor.py 着色到 tokens.json 的角色色。",
+ "_模板": "{subject}，{look}。{mono}。主体居中，四周留 8% 边距，不含任何文字、logo 或水印。",
+ "_类型补充": {
+  "figurative": "",
+  "icon": "图标化，单一物体，线宽统一，适合 64–128px 显示",
+  "decorative": "抽象装饰纹样，可平铺，无具体物体"
+ },
+ "packs": {
+  "swiss": {
+   "look": "几何化、理性的线稿示意，网格对齐",
+   "mono": "单色黑线稿，白底或透明底，线宽均匀，无灰度填充",
+   "recolor": {
+    "mode": "line",
+    "roles": [
+     "text"
+    ]
+   },
+   "background": {
+    "generator": "dotline"
+   },
+   "example": {
+    "subject": "（示例）项目的核心产品或场景"
+   }
+  },
+  "minimalism": {
+   "look": "极简细线插画，大量留白，单一主体",
+   "mono": "单色黑线稿，白底或透明底，线宽均匀，无灰度填充",
+   "recolor": {
+    "mode": "line",
+    "roles": [
+     "accent"
+    ]
+   },
+   "background": {
+    "generator": "dotline"
+   },
+   "example": {
+    "subject": "（示例）一辆虚构品牌电动轿车的侧面"
+   }
+  },
+  "editorial": {
+   "look": "杂志拼贴：黑白剪贴人像/物件，报纸印刷颗粒，撕纸边缘",
+   "mono": "黑白半调（网点）印刷质感，纯黑网点，透明底",
+   "recolor": {
+    "mode": "duo",
+    "roles": [
+     "text",
+     "accent"
+    ]
+   },
+   "background": {
+    "generator": "halftone"
+   },
+   "example": {
+    "subject": "（示例）一位虚构创始人的半身像"
+   }
+  },
+  "consulting": {
+   "look": "干净的商务示意线稿（流程、物件、建筑轮廓）",
+   "mono": "单色黑线稿，白底或透明底，线宽均匀，无灰度填充",
+   "recolor": {
+    "mode": "line",
+    "roles": [
+     "accent"
+    ]
+   },
+   "background": {
+    "generator": "dotline"
+   },
+   "example": {
+    "subject": "（示例）项目的核心产品或场景"
+   }
+  },
+  "apple-hig": {
+   "look": "SF Symbols 式的线性图标与产品轮廓线稿",
+   "mono": "单色黑线稿，白底或透明底，线宽均匀，无灰度填充",
+   "recolor": {
+    "mode": "line",
+    "roles": [
+     "accent"
+    ]
+   },
+   "background": {
+    "generator": "dotline"
+   },
+   "example": {
+    "subject": "（示例）项目的核心产品或场景"
+   }
+  },
+  "neumorphism": {
+   "look": "柔和的单色扁平物件剪影，圆润轮廓",
+   "mono": "单色扁平剪影，纯黑填充，透明底，无渐变",
+   "recolor": {
+    "mode": "flat",
+    "roles": [
+     "accent"
+    ]
+   },
+   "background": {
+    "generator": "halftone"
+   },
+   "example": {
+    "subject": "（示例）项目的核心产品或场景"
+   }
+  },
+  "claymorphism": {
+   "look": "黏土质感的圆润物件，先出单色扁平剪影再上色",
+   "mono": "单色扁平剪影，纯黑填充，透明底，无渐变",
+   "recolor": {
+    "mode": "duo",
+    "roles": [
+     "accent",
+     "accent2"
+    ]
+   },
+   "background": {
+    "generator": "halftone"
+   },
+   "example": {
+    "subject": "（示例）项目的核心产品或场景"
+   }
+  },
+  "neo-brutalism": {
+   "look": "粗黑描边的扁平物件，硬阴影，贴纸感",
+   "mono": "单色黑线稿，白底或透明底，线宽均匀，无灰度填充",
+   "recolor": {
+    "mode": "line",
+    "roles": [
+     "text"
+    ]
+   },
+   "background": {
+    "generator": "halftone"
+   },
+   "example": {
+    "subject": "（示例）项目的核心产品或场景"
+   }
+  },
+  "skeuo": {
+   "look": "写实物件的单色剪影（相机、纸张、金属）",
+   "mono": "单色扁平剪影，纯黑填充，透明底，无渐变",
+   "recolor": {
+    "mode": "duo",
+    "roles": [
+     "text",
+     "accent"
+    ]
+   },
+   "background": {
+    "generator": "halftone"
+   },
+   "example": {
+    "subject": "（示例）项目的核心产品或场景"
+   }
+  },
+  "glass": {
+   "look": "半透明发光的抽象几何体，先出单色线稿再着色",
+   "mono": "单色黑线稿，白底或透明底，线宽均匀，无灰度填充",
+   "recolor": {
+    "mode": "line",
+    "roles": [
+     "accent"
+    ]
+   },
+   "background": {
+    "generator": "flow"
+   },
+   "example": {
+    "subject": "（示例）项目的核心产品或场景"
+   }
+  },
+  "aurora": {
+   "look": "流动的抽象曲线与光带，单色线条",
+   "mono": "单色黑线稿，白底或透明底，线宽均匀，无灰度填充",
+   "recolor": {
+    "mode": "line",
+    "roles": [
+     "accent"
+    ]
+   },
+   "background": {
+    "generator": "flow"
+   },
+   "example": {
+    "subject": "（示例）项目的核心产品或场景"
+   }
+  },
+  "apple-dark": {
+   "look": "产品级精致线稿，舞台式居中，主体轮廓清晰",
+   "mono": "单色黑线稿，白底或透明底，线宽均匀，无灰度填充",
+   "recolor": {
+    "mode": "line",
+    "roles": [
+     "text"
+    ]
+   },
+   "background": {
+    "generator": "flow"
+   },
+   "example": {
+    "subject": "（示例）一辆虚构品牌电动轿车的侧面"
+   }
+  },
+  "tech-dark": {
+   "look": "科技线框图：电路、节点、设备轮廓线稿",
+   "mono": "单色黑线稿，白底或透明底，线宽均匀，无灰度填充",
+   "recolor": {
+    "mode": "line",
+    "roles": [
+     "accent"
+    ]
+   },
+   "background": {
+    "generator": "dotline"
+   },
+   "example": {
+    "subject": "（示例）项目的核心产品或场景"
+   }
+  },
+  "saas-launch": {
+   "look": "友好的 UI 插画：界面卡片、光标、图表的扁平线稿",
+   "mono": "单色黑线稿，白底或透明底，线宽均匀，无灰度填充",
+   "recolor": {
+    "mode": "line",
+    "roles": [
+     "accent"
+    ]
+   },
+   "background": {
+    "generator": "dotline"
+   },
+   "example": {
+    "subject": "（示例）项目的核心产品或场景"
+   }
+  },
+  "blueprint": {
+   "look": "工程蓝图：等距/三视图技术线稿，带尺寸线",
+   "mono": "单色黑线稿，白底或透明底，线宽均匀，无灰度填充",
+   "recolor": {
+    "mode": "line",
+    "roles": [
+     "text"
+    ]
+   },
+   "background": {
+    "generator": "dotline"
+   },
+   "example": {
+    "subject": "（示例）项目的核心产品或场景"
+   }
+  },
+  "dashboard": {
+   "look": "数据感的简洁图标线稿（仪表、曲线、地图）",
+   "mono": "单色黑线稿，白底或透明底，线宽均匀，无灰度填充",
+   "recolor": {
+    "mode": "line",
+    "roles": [
+     "accent"
+    ]
+   },
+   "background": {
+    "generator": "dotline"
+   },
+   "example": {
+    "subject": "（示例）项目的核心产品或场景"
+   }
+  },
+  "neo-fintech": {
+   "look": "金融科技的抽象几何线稿（卡片、硬币、增长曲线）",
+   "mono": "单色黑线稿，白底或透明底，线宽均匀，无灰度填充",
+   "recolor": {
+    "mode": "line",
+    "roles": [
+     "accent"
+    ]
+   },
+   "background": {
+    "generator": "flow"
+   },
+   "example": {
+    "subject": "（示例）项目的核心产品或场景"
+   }
+  },
+  "game-hud": {
+   "look": "科幻 HUD 线框：准星、扫描框、机甲轮廓线稿",
+   "mono": "单色黑线稿，白底或透明底，线宽均匀，无灰度填充",
+   "recolor": {
+    "mode": "line",
+    "roles": [
+     "accent"
+    ]
+   },
+   "background": {
+    "generator": "dotline"
+   },
+   "example": {
+    "subject": "（示例）项目的核心产品或场景"
+   }
+  },
+  "esports": {
+   "look": "动感剪影：选手/装备的高对比扁平剪影，速度线",
+   "mono": "单色扁平剪影，纯黑填充，透明底，无渐变",
+   "recolor": {
+    "mode": "flat",
+    "roles": [
+     "accent"
+    ]
+   },
+   "background": {
+    "generator": "flow"
+   },
+   "example": {
+    "subject": "（示例）项目的核心产品或场景"
+   }
+  },
+  "fantasy-rpg": {
+   "look": "奇幻纹章与道具的版画式线稿（剑、卷轴、地图）",
+   "mono": "单色黑线稿，白底或透明底，线宽均匀，无灰度填充",
+   "recolor": {
+    "mode": "duo",
+    "roles": [
+     "accent",
+     "text"
+    ]
+   },
+   "background": {
+    "generator": "flow"
+   },
+   "example": {
+    "subject": "（示例）项目的核心产品或场景"
+   }
+  },
+  "gacha": {
+   "look": "二次元角色的单色线稿立绘，干净描线",
+   "mono": "单色黑线稿，白底或透明底，线宽均匀，无灰度填充",
+   "recolor": {
+    "mode": "line",
+    "roles": [
+     "text"
+    ]
+   },
+   "background": {
+    "generator": "halftone"
+   },
+   "example": {
+    "subject": "（示例）项目的核心产品或场景"
+   }
+  },
+  "mascot": {
+   "look": "圆润 IP 吉祥物的单色线稿，表情夸张",
+   "mono": "单色黑线稿，白底或透明底，线宽均匀，无灰度填充",
+   "recolor": {
+    "mode": "duo",
+    "roles": [
+     "text",
+     "accent"
+    ]
+   },
+   "background": {
+    "generator": "halftone"
+   },
+   "example": {
+    "subject": "（示例）项目的核心产品或场景"
+   }
+  },
+  "manga": {
+   "look": "黑白漫画分镜：网点纸、速度线、粗细变化的墨线",
+   "mono": "黑白半调（网点）印刷质感，纯黑网点，透明底",
+   "recolor": {
+    "mode": "duo",
+    "roles": [
+     "text",
+     "accent"
+    ]
+   },
+   "background": {
+    "generator": "halftone"
+   },
+   "example": {
+    "subject": "（示例）一位虚构创始人的半身像"
+   }
+  },
+  "kawaii-sticker": {
+   "look": "可爱贴纸：圆润扁平剪影，粗白边",
+   "mono": "单色扁平剪影，纯黑填充，透明底，无渐变",
+   "recolor": {
+    "mode": "flat",
+    "roles": [
+     "accent"
+    ]
+   },
+   "background": {
+    "generator": "halftone"
+   },
+   "example": {
+    "subject": "（示例）项目的核心产品或场景"
+   }
+  },
+  "pixel-8bit": {
+   "look": "像素点阵画：低分辨率方块剪影，单色",
+   "mono": "单色扁平剪影，纯黑填充，透明底，无渐变",
+   "recolor": {
+    "mode": "flat",
+    "roles": [
+     "accent"
+    ]
+   },
+   "background": {
+    "generator": "halftone"
+   },
+   "example": {
+    "subject": "（示例）项目的核心产品或场景"
+   }
+  },
+  "vaporwave": {
+   "look": "复古雕像、棕榈、网格地平线的单色线稿",
+   "mono": "单色黑线稿，白底或透明底，线宽均匀，无灰度填充",
+   "recolor": {
+    "mode": "line",
+    "roles": [
+     "accent"
+    ]
+   },
+   "background": {
+    "generator": "flow"
+   },
+   "example": {
+    "subject": "（示例）项目的核心产品或场景"
+   }
+  },
+  "risograph": {
+   "look": "孔版印刷：黑白剪贴人像、粗网点、套色错位感",
+   "mono": "黑白半调（网点）印刷质感，纯黑网点，透明底",
+   "recolor": {
+    "mode": "duo",
+    "roles": [
+     "text",
+     "accent"
+    ]
+   },
+   "background": {
+    "generator": "halftone"
+   },
+   "example": {
+    "subject": "（示例）一位虚构创始人的半身像"
+   }
+  },
+  "sketch": {
+   "look": "铅笔手绘草图，线条有抖动，留草稿痕迹",
+   "mono": "单色黑线稿，白底或透明底，线宽均匀，无灰度填充",
+   "recolor": {
+    "mode": "line",
+    "roles": [
+     "text"
+    ]
+   },
+   "background": {
+    "generator": "flow"
+   },
+   "example": {
+    "subject": "（示例）项目的核心产品或场景"
+   }
+  },
+  "art-deco": {
+   "look": "装饰艺术：对称几何、扇形与阶梯纹的线稿",
+   "mono": "单色黑线稿，白底或透明底，线宽均匀，无灰度填充",
+   "recolor": {
+    "mode": "line",
+    "roles": [
+     "accent"
+    ]
+   },
+   "background": {
+    "generator": "halftone"
+   },
+   "example": {
+    "subject": "（示例）项目的核心产品或场景"
+   }
+  },
+  "pop-psychedelic": {
+   "look": "波普拼贴：黑白剪贴人像 + 粗网点，高对比",
+   "mono": "黑白半调（网点）印刷质感，纯黑网点，透明底",
+   "recolor": {
+    "mode": "duo",
+    "roles": [
+     "text",
+     "accent"
+    ]
+   },
+   "background": {
+    "generator": "flow"
+   },
+   "example": {
+    "subject": "（示例）一位虚构创始人的半身像"
+   }
+  },
+  "memphis": {
+   "look": "孟菲斯几何碎片：波浪线、三角、圆点的扁平剪影",
+   "mono": "单色扁平剪影，纯黑填充，透明底，无渐变",
+   "recolor": {
+    "mode": "flat",
+    "roles": [
+     "accent"
+    ]
+   },
+   "background": {
+    "generator": "halftone"
+   },
+   "example": {
+    "subject": "（示例）项目的核心产品或场景"
+   }
+  },
+  "y2k": {
+   "look": "千禧感的铬质图标，先出单色线稿再着色",
+   "mono": "单色黑线稿，白底或透明底，线宽均匀，无灰度填充",
+   "recolor": {
+    "mode": "line",
+    "roles": [
+     "accent"
+    ]
+   },
+   "background": {
+    "generator": "flow"
+   },
+   "example": {
+    "subject": "（示例）项目的核心产品或场景"
+   }
+  },
+  "big-type": {
+   "look": "干净克制的单线条线稿，主体大而简，配合巨字留白",
+   "mono": "单色黑线稿，白底或透明底，线宽均匀，无灰度填充",
+   "recolor": {
+    "mode": "line",
+    "roles": [
+     "accent"
+    ]
+   },
+   "background": {
+    "generator": "dotline"
+   },
+   "example": {
+    "subject": "（示例）一辆虚构品牌电动轿车的侧面"
+   }
+  }
+ }
+}

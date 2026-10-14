@@ -157,12 +157,21 @@ def color_check(path, png, tok, ptype):
         if c < need:
             hard = strict and uniform and (c < 3.0 or (is_acc and not large))
             (errs if hard else warns).append(("小字直接用了 accent，改用 accent_text " + tok["accent_text"] + "：" if is_acc and not large else "文字对比度不足：") + tag)
-    e2, w2, st = area_check(im, tok, ptype); return errs, warns + w2, dict(st, texts=seen)
+    # 素材委派（6.5）：没有经过 recolor 的具象图/图标槽位，不计入「调色板外颜色」和色相数；重着色过的照常检查
+    ex = []
+    for el in root.iter(NS + "image"):
+        if el.get("data-asset-type") in ("figurative", "icon") and el.get("data-recolored") != "1":
+            ex.append(tuple(f(el.get(k)) * S for k in ("x", "y", "width", "height")))
+    if ex: warns_note = [f"（{len(ex)} 个未重着色的插画槽位已放宽调色板外颜色检查）"]
+    else: warns_note = []
+    e2, w2, st = area_check(im, tok, ptype, ex); return errs, warns + w2, dict(st, texts=seen, note=warns_note)
 
-def area_check(im, tok, ptype):
+def area_check(im, tok, ptype, exclude=()):
     lim = tok["limits"]; warns = []
     acc = _rgb(tok["accent"]); acc2 = _rgb(tok["accent2"]) if tok.get("accent2") else None
     sm = im.resize((320, 180)); px = _px(sm); n = len(px)
+    kx, ky = 320 / im.width, 180 / im.height
+    inex = lambda i: any(x * kx <= i % 320 < (x + w) * kx and y * ky <= i // 320 < (y + h) * ky for x, y, w, h in exclude)
     a1 = sum(1 for p in px if _dist(p, acc) < 45) / n
     a2 = (sum(1 for p in px if _dist(p, acc2) < 45) / n) if acc2 else 0.0
     amax = lim["accent_max"].get(ptype, lim["accent_max"]["content"])
@@ -171,7 +180,8 @@ def area_check(im, tok, ptype):
     import colorsys
     pal = [_rgb(v) for k, v in tok.items() if k in ("bg", "surface", "line", "text", "text_muted", "accent", "on_accent", "accent_text", "accent2") and v]
     sat = []
-    for p in px:
+    for i, p in enumerate(px):
+        if exclude and inex(i): continue
         h, l, s_ = colorsys.rgb_to_hls(*[v / 255 for v in p])
         if s_ > 0.35 and 0.15 < l < 0.9: sat.append((p, h))
     if lim.get("off_palette_max") is not None:
@@ -247,6 +257,7 @@ def main():
                 except ET.ParseError: _root = None
                 if _root is not None:
                     ce, cw, _st = color_check(fp, png, tok, page_type(fp, _root, a.page_type)); errs += ce; warns += cw
+                    for _nt in _st.get("note", []): print("   ·", os.path.basename(fp), _nt)
             if a.accent:
                 ratio = accent_ratio(png, a.accent)
                 (errs if ratio > a.max_accent else warns if ratio > a.max_accent * 0.8 else []).append(f"强调色面积 {ratio:.1%}") if ratio > a.max_accent * 0.8 else None
