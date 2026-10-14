@@ -20,3 +20,18 @@ scripts/ 下的脚本为原创编写，未复制第三方源码。
 - Apple Human Interface Guidelines（https://developer.apple.com/design/human-interface-guidelines/ ）：apple-hig 的设计原则与系统色参考，仅为文字与配色描述，未使用任何 Apple 素材或字体文件。
 - ui-ux-pro-max-skill styles.csv 的 3D & Hyperrealism、Soft UI Evolution、Y2K Aesthetic、Memphis Design、Kinetic Typography 条目：风格关键词与典型适用行业参考。
 - 所有示例页中的品牌、产品、人物、数据均为虚构；角色插画为本项目原创 SVG。
+
+## 配色系统（附录 D、scripts/tokens.py、check_render.py --colors）
+代码为原创，只依赖 Python 标准库和 Pillow；以下资料只借鉴规则和思路，未拷贝代码：
+- WCAG 2.2 · Understanding 1.4.3 Contrast (Minimum) https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html 与 1.4.11 Non-text Contrast https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html （W3C 文档）：相对亮度与对比度公式、4.5:1 / 3:1 / 7:1 阈值、大字定义。
+- Material Design 3 · Color roles https://m3.material.io/styles/color/roles ：角色 token 与 "on-" 配对思路；material-color-utilities（Apache-2.0）https://github.com/material-foundation/material-color-utilities 。
+- Radix Colors（MIT）https://github.com/radix-ui/colors ：12 级阶梯的用途划分；亮色系实色配深色文字。
+- Tailwind CSS（MIT）https://github.com/tailwindlabs/tailwindcss ：50–950 明度阶梯思路。
+- ColorBrewer（Apache-2.0）https://github.com/axismaps/colorbrewer ：图表顺序/发散/类别色板思路。
+- Adobe Leonardo（Apache-2.0）https://github.com/adobe/leonardo ：按目标对比度推导颜色的思路（tokens.py 的明度调整）。
+- anthropics/skills · theme-factory（Apache-2.0）https://github.com/anthropics/skills/tree/main/skills/theme-factory ：主题先展示、再让用户确认。
+- nextlevelbuilder/ui-ux-pro-max-skill（MIT）slide-color-logic.csv：按页面情绪限定 accent 用法。
+- Okabe & Ito 色盲友好配色 https://jfly.uni-koeln.de/color/ ：多系列图表类别色。
+- 60-30-10 面积比例：通用设计经验法则。
+- 未采用 APCA（Myndex/apca-w3，自定义许可，非 MIT/Apache）。
+

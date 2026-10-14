@@ -13,6 +13,7 @@ description: >-
 辅助脚本都在本 skill 目录下的 `scripts/`：
 - `check_render.py`：检查 SVG（XML、viewBox、文字溢出估算、安全区、强调色面积），用 rsvg 渲染 PNG，再拼一张缩略总览图。
 - `svg2pptx.py`：把 SVG 导出成 .pptx，每页嵌入原生 SVG 并附 PNG 回退。
+- `tokens.py`：给 33 个风格包生成配色角色 token（tokens.json），可换品牌主色并自动修复对比度（见附录 D）。
 
 ---
 
@@ -113,6 +114,17 @@ description: >-
 ## 第 6 步：设计稿（在初稿上换皮）
 输入 = 初稿 SVG + 风格包（附录 A）+ 可选的背景图，输出到 `svg/`。提示词见附录 C6。
 
+### 6.0 先生成配色 token（每个项目必做，用户不用操心）
+选定风格包后、画第一页设计稿之前，运行：
+```
+python3 scripts/tokens.py <风格包> -o tokens.json                       # 默认配色
+python3 scripts/tokens.py <风格包> --accent "#品牌主色" -o tokens.json    # 用户给了品牌色
+```
+- 脚本会写出 `bg / surface / line / text / text_muted / accent / on_accent / accent_text / accent2` 等角色，以及该风格包的检查限制（profile），并自动修好不达标的配对（例如浅底上的亮色品牌色会得到一个更深的 `accent_text`）。
+- 把 `"tokens": "tokens.json"` 写进 state.json。换风格包或换品牌色时重新生成，并把所有设计稿标成 `stale`。
+- **设计稿里的颜色只能取自 tokens.json**（插画、图片、图表系列色除外）。小于 24px 的强调文字用 `accent_text`，放在 accent 色块上的文字用 `on_accent`。规则见附录 D。
+- 每页 SVG 根元素写上页面类型：`<svg ... data-page="cover|section|manifesto|content">`（不写就按 content 检查）；有意出血的满版巨字加 `data-bleed="1"`。
+
 **设计阶段不能改的**（adapted from zhx47/ppt-agent (Apache-2.0)）：
 1. 文字内容；
 2. 卡片的数量、顺序、位置和尺寸；
@@ -126,9 +138,20 @@ description: >-
 
 ## 第 7 步：SVG 检查与看图修改
 ```
-python3 scripts/check_render.py svg/ --out png --sheet contact_sheet.png --accent "#D90429" --max-accent 0.10
+python3 scripts/check_render.py svg/ --out png --sheet contact_sheet.png --colors tokens.json
 ```
-脚本会检查：XML 能否解析、viewBox 是否为 1280×720、文字有没有超出画布或安全区、`<text>` 宽度估算是否超出所在卡片、强调色面积占比；然后渲染 PNG 和缩略总览图。
+脚本会检查：XML 能否解析、viewBox 是否为 1280×720、文字有没有超出画布或安全区、`<text>` 宽度估算是否超出所在卡片；加上 `--colors` 后还会检查：token 配对对比度、每段文字和**实际渲染出的背景**之间的对比度、小字是否直接用了 accent、accent 面积（按页面类型）、调色板外的颜色、一页的色相数。然后渲染 PNG 和缩略总览图。
+（不带 `--colors` 也能用，行为和以前一样；旧的 `--accent "#D90429" --max-accent 0.10` 仍然支持。）
+
+**检查失败时的自动修复循环（最多 3 轮）**：
+1. 读输出里的 `✗`（FAIL，退出码 1）。按提示修：
+   - "token 配对不达标" → 运行 `python3 scripts/tokens.py --fix tokens.json`，再重画受影响的页；
+   - "小字直接用了 accent" → 把这段文字改成 `accent_text`；
+   - "文字对比度不足" → 换成 `text` / `text_muted` / `on_accent`，或者给文字加 `surface` 底；
+   - 溢出类问题 → 缩短文字或换行（不改卡片位置；非改不可就退回第 5 步）。
+2. 只重画有 `✗` 的页，再跑一次检查。
+3. 3 轮后仍有 `✗`：停下来，把剩下的问题和截图告诉用户，不要硬交付。
+`!`（WARN）不阻止交付，但要逐条看 PNG 判断：accent 面积超限、调色板外颜色、彩虹页通常要改；渐变/玻璃背景上的对比度提示，确认肉眼清楚即可。
 脚本跑完还要**自己打开 PNG 看**，重点看：文字溢出或重叠、留白不均、红色（强调色）是否过多、层级是否清楚、字体是否回退成方块。
 字体写成 `font-family="'Noto Sans SC','Microsoft YaHei','PingFang SC',sans-serif"`，保证 PowerPoint 和本机都有可用字体。
 中文长句用 `<tspan>` 手动换行，按"中文字宽 ≈ 字号、ASCII ≈ 0.56×字号"估算。
@@ -164,7 +187,7 @@ python3 scripts/svg2pptx.py out.pptx svg/*.svg
 每完成一步就更新，长对话或换助手接手时，先读这个文件：
 ```json
 {
-  "project": "如何做好PPT", "mode": "topic", "style_pack": "swiss",
+  "project": "如何做好PPT", "mode": "topic", "style_pack": "swiss", "tokens": "tokens.json",
   "gates": {"requirements": "confirmed", "outline": "confirmed", "research": "skipped", "draft": "ready", "design": "ready"},
   "pages": {
     "05": {"title": "金字塔原理：结论先行", "research": "ready", "draft": "ready", "design": "stale"}
@@ -417,7 +440,7 @@ python3 scripts/svg2pptx.py out.pptx svg/*.svg
 
 **A6–A33 的检查与导出**：
 - `check_render.py` 会把 `fill="none"` 或 `opacity<1` 的装饰矩形（高光、斜面、缝线框）排除在"卡片"之外，不会误报溢出。
-- 这些风格包多为渐变或多色强调，**不要传 `--accent`**（面积检查只适用于纯色强调色的风格包）；改为看 PNG 目视确认强调不过量。
+- 用 `--colors tokens.json` 检查，不要再传 `--accent`。每个风格包的 profile 已经决定了放宽程度：`multi`（拼贴、多色）放宽面积和色相上限；`gradient`（glass、aurora、vaporwave、y2k 等）不查色相数和调色板外颜色，文字对比度问题只给提示，不判失败。
 - 导出 PPTX 时 PNG 回退由 rsvg 渲染，滤镜/渐变/模糊都会如实呈现；PowerPoint 对 SVG 滤镜支持有限，原生 SVG 层可能显示得比 PNG 简化，重要场合以 PNG 渲染效果为准、导出后在目标软件里打开检查。
 
 **品牌或参考图**：用户有品牌就用品牌官方主色替换强调色。给了参考图的话，先把参考图的配色、字号层级和卡片样式分析成以上格式的文字规则再用。
@@ -495,12 +518,98 @@ python3 scripts/svg2pptx.py out.pptx svg/*.svg
 ### C6 设计稿 SVG（adapted from zhx47/ppt-agent (Apache-2.0)）
 ```
 你是 PPT 设计稿增强器。在不修改文案、卡片数量/顺序/位置/尺寸、字体与字号层级和主布局的前提下，对初稿 SVG 做视觉增强。
-只输出单个完整 <svg>。按风格包注入配色、背景、装饰、卡片表面细节、图表着色和强调方式；背景只做底层氛围，不能压住正文；风格和可读性冲突时，可读性优先；严格遵守风格包的颜色使用规则（例如强调色面积 ≤10%）。
+只输出单个完整 <svg>。按风格包注入配色、背景、装饰、卡片表面细节、图表着色和强调方式；背景只做底层氛围，不能压住正文；风格和可读性冲突时，可读性优先；颜色只能取自配色 token（附录 D）：小于 24px 的强调文字用 accent_text，accent 色块上的文字用 on_accent，强调色面积不超过附录 D 的上限；根元素写 data-page 页面类型。
 初稿：{{draft_svg}}
 风格包：{{style_pack}}
+配色 token：{{tokens_json}}
 ```
 
 ### C7 HTML 转 16:9 幻灯片
 ```
 请你修改HTML文件，改成类似PPT的形式，每页都是16:9，可以滚动切换。注意放大文字大小，以适配16：9的页面尺寸
 ```
+
+## 附录 D：配色系统（第 6.0 步生成、第 7 步检查）
+每份 deck 只用**角色 token**里的颜色。`tokens.py` 负责生成，`check_render.py --colors` 负责检查；下面是规则本身。
+
+### D1 角色 token（tokens.py 为每个风格包提供默认值）
+
+| Token | 角色 | 用在哪 | 不许用在哪 |
+|---|---|---|---|
+| `bg` | 页面底色 | 整页背景 | — |
+| `surface` | 卡片/区块底色（比 bg 亮或暗 1 级） | 卡片、表格隔行、代码块 | 文字 |
+| `line` | 分隔线/描边 | 卡片边框、表格线、连线 | 文字、大面积填充 |
+| `text` | 主文字 | 标题、正文、巨字 | — |
+| `text_muted` | 次要文字 | 注释、来源、页脚 | 标题、关键数字 |
+| `accent` | 唯一强调色（填充用） | 色带、选中态、表头、关键形状 | **小字**（除非对比度达标，见下） |
+| `on_accent` | 放在 accent 上的文字 | 色带文字、按钮文字、表头文字 | 其它地方 |
+| `accent_text` | 可以当小字用的强调色 | 小标签、编号、箭头、细线 | 大面积填充 |
+| `accent2`（可选） | 第二强调色 | 最多 1 类元素（例如便利贴） | 与 accent 同时出现在同一元素上 |
+| 语义色（涨/跌/警告，可选） | 语义色 | 只表示涨跌、通过/失败、风险 | 装饰 |
+
+规则借鉴 Material 3 的 role + "on-" 配对思路：**颜色只能按声明的配对使用**（`on_accent` 只放在 `accent` 上，`text` 只放在 `bg/surface` 上）。
+
+亮色霓虹（荧光绿、酸性黄、青色这类高亮度 accent）：`accent_text` 必须设为 `text`（近黑），因为霓虹放在浅底上的对比度约 1:1。Radix 也是这样处理 Lime/Yellow/Amber/Sky/Mint 的：它们的实色台阶要配深色文字。
+
+### D2 面积比例（60-30-10，按页检查）
+
+| 角色 | 占页面面积 | 说明 |
+|---|---|---|
+| `bg` + `surface` | ≥ 60% | 中性底 |
+| `text` + `line` + 图片 | 约 30% | 内容本身 |
+| `accent`（含 accent2） | **≤ 15%**；封面、章节页、宣言页最多 35%（multi / gradient 风格包更宽，见 D7） | 只有封面/章节/巨字页可以用满版色带 |
+| `accent2` | ≤ 5% | 只能用在 1 类元素上 |
+
+- 一页最多 **1 个 accent + 1 个 accent2**。语义色不算，但只能用在数据上。
+- 每页的强调焦点 ≤ 3 处（色带、一个高亮形状、一个关键数字）。
+- 不要做"彩虹页"：同一页里不同色相（除中性色外）≤ 3 个（multi 风格包 ≤ 6）。
+
+### D3 放置规则
+
+- accent 放在**最重要的那一处**：核心结论、选中项、表头、底部色带、关键数字。不要用来做装饰性的大块。
+- 小于 24px 的文字只能用 `text`、`text_muted`、`on_accent`（放在 accent 上时）或 `accent_text`，**不能直接用 accent**（除非 accent 对 bg 的对比度 ≥ 4.5:1）。
+- 细线（≤ 2px）和箭头用 `accent_text` 或 `line`，不能用浅色霓虹。
+- 深色与浅色主题配对：同一风格包的深色/浅色版只换 `bg / surface / line / text / text-muted / accent-text`；`accent` 色相不变，`on_accent` 按对比度重新选。
+- 图片和截图上的文字：要么加 `surface` 或半透明底，要么确认对比度达标。
+
+### D4 对比度检查（WCAG 2.x 公式）
+
+| 配对 | 最低对比度 |
+|---|---|
+| `text` / `bg`、`text` / `surface` | ≥ 7:1（目标），不得 < 4.5:1 |
+| `text_muted` / `bg` | ≥ 4.5:1 |
+| `on_accent` / `accent` | ≥ 4.5:1；色带上 ≥ 24px 或 ≥ 18.7px 粗体的大字 ≥ 3:1 |
+| `accent_text` / `bg` | ≥ 4.5:1 |
+| 图形与界面元素（图表系列、边框、图标）/ 相邻色 | ≥ 3:1（WCAG 1.4.11） |
+| `line` / `bg` | 不检查（装饰性），但当它是唯一分隔手段时需 ≥ 3:1 |
+
+对比度计算：`(L1+0.05)/(L2+0.05)`，L 为 sRGB 相对亮度。
+
+### D5 图表配色
+
+- 单系列：默认用 `accent`，其余系列用 `text_muted` 或 `surface` 的灰。"一个亮、其余灰"，突出要说的那一个数据。
+- 多系列（≤ 6 个）：用对色盲友好的类别色（Okabe–Ito 8 色，或 ColorBrewer 的 Set2 / Dark2）。每个系列对 bg 的对比度 ≥ 3:1，否则加描边或直接标数值。
+- 顺序/发散数据：用同一色相的明度阶梯（Tailwind 50–950、Radix 1–12 那样的阶梯），或 ColorBrewer 的 sequential / diverging 色板。
+- 不能只靠颜色表达含义：涨跌要同时有 ▲▼ 或 +/− 符号。
+- 红绿对立的数据：改用蓝/橙。
+
+### D6 交付前自检
+
+1. 所有颜色都来自 token 吗？（没有零散 hex）
+2. 每页 accent 面积 ≤ 15%（封面、章节、宣言页 ≤ 35%）？
+3. 小字没有直接用霓虹 accent？
+4. 第 4 节的对比度全部达标？
+5. 图表系列数 ≤ 6，而且不只靠颜色区分？
+
+### D7 风格包 profile 与检查强度（check_render.py --colors）
+| profile | 风格包 | accent 面积上限（内容页 / 封面·章节·宣言页） | accent2 上限 | 色相数上限 | 调色板外颜色上限 | 文字对比度不足 |
+|---|---|---|---|---|---|---|
+| `solid` | swiss、minimalism、editorial、consulting、apple-hig、neumorphism、tech-dark、blueprint、manga、art-deco、big-type | 15% / 35% | 5% | 3 | 5% | 底色均匀且 <3:1，或小字直接用 accent 且不达标 → **FAIL**；其余 → WARN |
+| `multi` | claymorphism、neo-brutalism、skeuo、dashboard、game-hud、esports、fantasy-rpg、gacha、mascot、kawaii-sticker、pixel-8bit、risograph、sketch、memphis | 35% / 60% | 25% | 6 | 30% | 只 WARN |
+| `gradient` | glass、aurora、apple-dark、saas-launch、neo-fintech、vaporwave、y2k、pop-psychedelic | 40% / 70% | 30% | 不查 | 不查 | 只 WARN |
+
+- 面积、色相、调色板外颜色永远只给 WARN；FAIL 只用于有把握的对比度问题和 token 本身不达标。
+- 单个符号（› ✓ ★）按图标处理，不算文字；旋转/变形过的文字、半透明文字、渐变填充文字不做测量。
+- 想对某个项目更严或更松：直接改 tokens.json 里的 `limits`。
+
+（思路参考：Material 3 color roles、Radix Colors（MIT）、WCAG 2.2 对比度公式、ColorBrewer（Apache-2.0）、Okabe–Ito 配色；代码为原创，详见 NOTICE.md）
