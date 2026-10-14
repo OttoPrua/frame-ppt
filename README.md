@@ -6,8 +6,6 @@ English | [简体中文](README.zh-CN.md)
 
 **frame-ppt works with you to structure the deck. It is not a one-click page generator.** It asks about your brief first, then builds a pyramid-principle outline. Each page waits for your sign-off before the final design is produced.
 
-![Workflow](docs/images/readme/workflow-en.png)
-
 ![Install](docs/images/readme/install-en.png)
 
 Paste this to your agent (Claude Code, Codex, etc.):
@@ -24,16 +22,18 @@ git clone https://github.com/ottoprua/frame-ppt.git ~/.claude/skills/frame-ppt
 
 Then say **`frame`** to your agent to start.
 
-![Results](docs/images/readme/results-en.png)
+![Process](docs/images/readme/process-en.png)
+
+This 8-slide deck was made with frame-ppt, and it shows how frame-ppt builds a deck: brief Q&A, research digest, pyramid outline, page briefs, SVG wireframes, style packs, then checks and export. Full-size slides are in [docs/images/process/en](docs/images/process/en).
+
+![How a deck is built](docs/images/process/process-en.png)
+
+![Styles](docs/images/readme/styles-en.png)
 
 There are 33 style packs, each with its own signature layout and theme. All brands and data in these images are fictional examples.
 
-![Core styles](docs/images/style-gallery.png)
-
-![Industry & trend styles](docs/images/style-gallery-industry.png)
-
-Full-resolution slides (3840×2160) are available in Releases.
+![Style packs](docs/images/style-gallery-en.png)
 
 ---
 
-[Apache-2.0](LICENSE) · Credits and third-party notices in [NOTICE.md](NOTICE.md)
+Apache-2.0 License · Credits and third-party notices in [NOTICE.md](NOTICE.md)
