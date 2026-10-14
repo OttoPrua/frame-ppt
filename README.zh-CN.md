@@ -36,4 +36,4 @@ git clone https://github.com/ottoprua/frame-ppt.git ~/.claude/skills/frame-ppt
 
 ---
 
-MIT License · 致谢与第三方许可见 [NOTICE.md](NOTICE.md)
+[Apache-2.0](LICENSE) · 致谢与第三方许可见 [NOTICE.md](NOTICE.md)

@@ -36,4 +36,4 @@ Full-resolution slides (3840×2160) are available in Releases.
 
 ---
 
-MIT License · Credits and third-party notices in [NOTICE.md](NOTICE.md)
+[Apache-2.0](LICENSE) · Credits and third-party notices in [NOTICE.md](NOTICE.md)
