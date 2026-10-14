@@ -24,7 +24,7 @@ Then say **`frame`** to your agent to start.
 
 ![Process](docs/images/readme/process-en.png)
 
-This 8-slide deck was made with frame-ppt, and it shows how frame-ppt builds a deck: brief Q&A, research digest, pyramid outline, page briefs, SVG wireframes, style packs, then checks and export. Full-size slides are in [docs/images/process/en](docs/images/process/en).
+This 9-slide deck (a cover plus 8 steps) was made with frame-ppt, and it shows how frame-ppt builds a deck: brief Q&A, research digest, pyramid outline, page briefs, SVG wireframes, style packs, then checks and export. Full-size slides are in [docs/images/process/en](docs/images/process/en).
 
 ![How a deck is built](docs/images/process/process-en.png)
 
