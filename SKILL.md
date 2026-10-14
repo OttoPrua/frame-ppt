@@ -183,21 +183,33 @@ python3 scripts/svg2pptx.py out.pptx svg/*.svg
 ---
 
 ## 附录 A：风格包
-共 27 个。通用：A1 swiss · A2 apple-dark · A3 minimalism · A4 consulting · A5 tech-dark · A6 skeuo · A7 glass · A8 editorial · A9 material3 · A10 neumorphism · A11 claymorphism · A12 neo-brutalism · A13 aurora；行业与特色：A14–A27（见下）。
+共 35 个：通用 15 个（A1–A13、A28 apple-hig、A29 soft-3d），行业与潮流 20 个（A14–A27、A30–A35）。
 
 **按场景 / 行业选风格包**：
 | 场景 | 推荐 |
 |---|---|
 | 培训、通用汇报 | swiss、minimalism、material3 |
-| 咨询、经营分析、周报 | consulting、dashboard |
-| 品牌故事、年度回顾 | editorial、skeuo |
-| 科技发布会 | apple-dark、saas-launch、glass、aurora |
-| 工程、研发、架构评审 | blueprint、tech-dark |
-| 游戏发行、版本更新 | game-hud、fantasy-rpg、gacha |
-| 电竞、赛事活动 | esports、neo-brutalism |
+| 咨询、战略、市场进入 | consulting、dashboard |
+| 经营分析、周报月报 | dashboard、consulting、neo-fintech |
+| 品牌故事、杂志、年度回顾 | editorial、skeuo、minimalism |
+| 消费电子 / 科技发布会 | apple-dark、big-type、aurora、glass |
+| App 功能、移动产品 | apple-hig、material3、soft-3d、y2k |
+| SaaS / AI 产品 | saas-launch、aurora、glass |
+| 金融科技、数字银行、加密 | neo-fintech、soft-3d、dashboard |
+| 工程、硬件、架构评审 | blueprint、tech-dark |
+| 智能家居、IoT | neumorphism、soft-3d |
+| 教育、儿童 | claymorphism、kawaii-sticker |
+| 游戏发行、版本更新、世界观 | game-hud、fantasy-rpg、gacha、pixel-8bit |
+| 电竞、赛事 | esports、neo-brutalism |
 | IP / 角色 / 二次元 | mascot、manga、kawaii-sticker、gacha |
-| 年轻化活动、社区 | claymorphism、kawaii-sticker、pixel-8bit |
-| 潮流、创意、文化 | vaporwave、risograph、sketch、neo-brutalism |
+| 消费品牌社媒企划 | kawaii-sticker、memphis、y2k |
+| 创业活动、黑客松 | neo-brutalism、big-type |
+| 创意机构、作品集 | memphis、editorial、risograph |
+| 音乐节、派对、潮流活动 | pop-psychedelic、vaporwave、y2k |
+| 奢侈品、酒店、晚宴 | art-deco、skeuo |
+| 文创、独立出版 | risograph、sketch |
+| 工作坊、头脑风暴 | sketch |
+| 演讲开场、宣言、金句 | big-type、minimalism |
 每个风格包包含：调色板、图表配色、设计哲学、背景处理、装饰语言、颜色使用规则，以及该做和不该做的事。
 （风格包结构和 minimalism、consulting 两个预设 adapted from zhx47/ppt-agent (Apache-2.0)）
 
@@ -347,7 +359,76 @@ python3 scripts/svg2pptx.py out.pptx svg/*.svg
 ### A27 `sketch`：手绘草图
 - 灵感来自 Rough.js：横格笔记本底 + 左侧红色页边线；所有框用 `feTurbulence baseFrequency .03` + `feDisplacementMap scale 5` 做抖动，并画两遍（第二遍细一点、错位 2–3px）；斜线 hachure 填充（pattern 旋转 ±30°）；标题下手绘波浪下划线；数字外画圈。
 
-**A6–A27 的检查与导出**：
+### 新增风格包（A28–A35）
+### A28 `apple-hig`：Apple HIG（系统界面风，区别于 apple-dark 发布会）
+- 遵循 HIG 三原则：清晰（Clarity）、遵从内容（Deference）、层次（Depth）。底 `#F2F2F7`（systemGroupedBackground），分组卡白色圆角 14，行高 64，行间 1px `#C6C6C8` 分隔线从文字左缘开始；分组标题 13px `#6D6D72`，分组脚注 13px。
+- 系统色：蓝 `#007AFF`、绿 `#34C759`、橙 `#FF9500`、红 `#FF3B30`、靛 `#5856D6`、黄 `#FFCC00`；图标为 32px 圆角 8 的彩色方块。开关 52×30 胶囊（开=绿），白色圆钮带柔投影。
+- 字体：SF Pro / 苹方风格无衬线（中文用 Noto Sans CJK），大标题 52 粗体、正文 17、次级 13 `#8E8E93`。
+- 版式：左侧大标题 + 分组列表，右侧 iPhone 机身（圆角 52）展示设置界面。不该做：渐变、霓虹、粗边框、自造控件。
+### A29 `soft-3d`：Soft UI 3D 物体 + UI 卡片融合
+- 底淡紫→淡粉渐变 `#EEF0FF → #FDF2F8`；3D 物体用纯 SVG 模拟：球体 = 偏心径向渐变（高光点在左上 35%/30%，白 → 浅色 → 主色）+ 椭圆高光 + 模糊投影椭圆；圆柱 = 横向 4 段线性渐变（暗-亮-高光-暗）+ 顶部椭圆盖 + 底部椭圆。
+- UI 卡：白 0.85、圆角 24、双层柔投影（近 0.06 + 远 `#312E81` 0.12，dy 18 blur 30）；进度条、数字用主色 `#6366F1`、粉 `#EC4899`、绿 `#10B981`。
+- 版式：左侧标题 + UI 卡堆叠，右侧 3D 物体群（高低错落的圆柱 + 漂浮小球）。不该做：写实贴图、硬阴影、物体压住文字。
+### A30 `neo-fintech`：新金融科技
+- 底 `#0A0B0E` + 右上墨绿径向光；卡片 `#1A1D24 → #111318` 圆角 24 + `#262A33` 描边；强调色酸橙 `#C6FF3D → #7CFFB2`（只用在曲线、涨幅、银行卡）。
+- 主图：面积折线（酸橙描边 3.5 + 0.35→0 渐变填充）+ 末端发光点；银行卡视觉（酸橙渐变卡面 + 等宽卡号）；小指标卡带迷你 sparkline。
+- 合规：金融数字必须标注"虚构 / 不构成投资建议"。不该做：多种强调色、红绿涨跌以外的彩色。
+### A31 `art-deco`：装饰艺术
+- 底墨绿径向 `#123A33 → #06140F`；金色渐变 `#F7E7B0 → #D4AF37 → #8C6B1F`；中心向上的扇形光芒（18 条，透明度 0.1）；双层细金框 + 四角阶梯折线与菱形装饰。
+- 字体：衬线，英文大字距（14），中文字距 10；信息区三栏竖线分隔，标签全大写小字距 6。版式严格对称居中。不该做：圆角、柔投影、非对称。
+### A32 `pop-psychedelic`：迷幻波普
+- 背景：15 个同心色环（粉 `#FF3D7F`、橙 `#FF9F1C`、黄 `#FFE74C`、绿 `#3DDC97`、蓝 `#2EC4F1`、紫 `#8E44EC` 循环）整体加 `feTurbulence turbulence baseFrequency=".004 .012"` + `feDisplacementMap scale 90` 扭成液态漩涡。
+- 中央用深紫 `#2A0A3D` 0.88 大胶囊承载文字；标题黄字 + 粉色描边（`paint-order="stroke"`）。信息层级：头牌 40 → 次级 24 → 其他 18。不该做：小字压在漩涡上、超过一块文字区。
+### A33 `memphis`：孟菲斯
+- 奶油底 `#FFF6E5`；几何碎片：波浪线、粗环、三角、点阵、锯齿 pattern、斜放矩形，全部 3–4px 黑描边；色板粉 `#FF4F81`、黄 `#FFD23F`、蓝 `#2D9CDB`、绿 `#3DDC97`、橙 `#FF9F1C`。
+- 标题块 = 彩色矩形 + 4px 黑框 + 偏移 8px 黑色硬阴影；案例卡顶部色条。碎片只放四周，不进入正文区。
+### A34 `y2k`：千禧 / Y2K 落地页
+- 底冰蓝→淡紫→淡粉渐变 + 白色弧线；顶部胶囊导航（品牌、菜单、渐变 CTA）；标题用"铬"渐变（白→钢蓝→深靛硬分界→浅蓝）+ 深靛描边 1.5；泡泡主视觉（偏心径向渐变：白 → 淡紫 0.35 → 浅蓝 0.6 + 白描边 + 椭圆高光）+ 四角星闪光；双按钮（渐变实心 + 白底描边）。
+### A35 `big-type`：大字冲击
+- 满版巨字（230px，字距 −12），一行实心一行描边（stroke 3，fill none），允许出血到画布左缘；底部 200px 高饱和色带（`#FF4A1C`）放宣言小字和年份。一页只有一句话。不该做：再加图片或卡片。
+
+### 每个风格包的典型版式与示例主题
+示例页都放在 `docs/images/styles/<pack>.png`，每个风格包用自己的典型版式和行业主题（品牌和数据都是虚构的）。生成时**先按主题选风格包，再套用该风格包的典型版式**；内容结构依然来自大纲，版式只决定"这一页长什么样"。
+
+| 风格包 | 典型版式 | 示例主题 / 常见行业 |
+|---|---|---|
+| `swiss` | 海报网格：超大字标 + 12 栏 + 议程表 | 设计周活动议程 |
+| `minimalism` | 一页一句话：大留白 + 单焦点 | 品牌战略核心主张 |
+| `editorial` | 杂志跨页：左大图 + 右标题/首字下沉/引语 | 生活方式杂志封面故事 |
+| `consulting` | 行动标题 + 左图表右建议 + 底部结论条 | 市场进入建议（咨询报告） |
+| `material3` | 功能卡片 + 手机界面 + 胶囊按钮 | 移动 App 新版本功能发布 |
+| `apple-hig` | 分组圆角列表 + iPhone 设置界面，系统色与开关 | iOS App 功能 / 隐私设计说明 |
+| `neumorphism` | 控制面板：大旋钮 + 开关瓷砖 | 智能家居控制界面 |
+| `claymorphism` | 步骤卡：大号黏土图标 + 编号胶囊 | 儿童教育 App 新手引导 |
+| `soft-3d` | 左 UI 卡片 + 右 3D 立体物（圆柱/球体）光影场景 | 金融 / 健康类消费 App 推广 |
+| `neo-brutalism` | 超大字块 + 硬阴影色块拼贴 + 粗框日程 | 创业路演日活动海报 |
+| `skeuo` | 翻开的皮面笔记本：左时间线右产品插画 | 老字号品牌传承手册 |
+| `glass` | 空间 UI：大玻璃面板 + 参数小卡，背景有清晰构图 | 空间计算 / XR 产品功能 |
+| `aurora` | 居中 Hero：徽标胶囊 + 两行大标题 + 三个指标 | AI 产品愿景 / 官网首屏 |
+| `apple-dark` | 发布会：一句超大宣言 + 产品主视觉 + 两侧大数字 | 消费电子新品发布 |
+| `tech-dark` | 系统拓扑图：节点 + 连线 + 底部指标条 | 云架构 / 技术方案评审 |
+| `saas-launch` | 定价三栏：中间推荐方案高亮 | SaaS 产品定价 / 发布 |
+| `blueprint` | 标注图：中心剖面 + 引线编号 + 图签 | 硬件 / 机械工程设计评审 |
+| `dashboard` | KPI 网格：4 指标卡 + 趋势大图 + 环形占比 | 电商 / 经营月度看板 |
+| `neo-fintech` | 深色卡片仪表：大趋势图 + 银行卡视觉 + 指标卡 | 数字银行 / 加密 / 金融科技业绩 |
+| `game-hud` | 任务简报：战术地图 + 目标清单 + 奖励 + 开始按钮 | 游戏任务 / 关卡设计介绍 |
+| `esports` | 对阵海报：左右两队 + 中央 VS + 数据对比条 | 电竞赛事对阵 / 赛前预告 |
+| `fantasy-rpg` | 角色档案：左立绘面板 + 右背景故事与属性条 | 奇幻 RPG 世界观 / 角色设定 |
+| `gacha` | 角色卡阵列：中央 SSR 放大 + 两侧 SR/R | 二次元游戏新卡池 / 角色上线 |
+| `mascot` | 角色档案：左半屏角色 + 台词气泡，右侧标签与资料卡 | IP / 吉祥物角色介绍 |
+| `manga` | 四格 / 分镜：不同尺寸格子 + 对白框 + 集中线 | 产品使用故事 / 用户旅程漫画 |
+| `kawaii-sticker` | 贴纸拼贴：产品吉祥物贴纸 + 周计划贴纸条 | 零食 / 消费品牌社媒企划 |
+| `pixel-8bit` | 横版关卡地图：里程碑像素框 + 小人 + 对话框 | 独立游戏开发路线图 |
+| `vaporwave` | 海报：落日 + 透视网格 + 铬字标题 + 复古窗口信息 | 复古音乐 / 派对活动海报 |
+| `y2k` | 落地页首屏：导航胶囊 + 铬字大标题 + 双按钮 + 泡泡主视觉 | Gen Z 消费 App 官网首屏 |
+| `risograph` | 海报：专色叠印几何构图 + 套色错位大字 | 独立出版 / 书展 / 文创活动 |
+| `sketch` | 白板：手绘流程框 + 箭头 + 便利贴 | 产品共创工作坊 / 头脑风暴 |
+| `art-deco` | 对称邀请函：扇形光芒 + 几何金框 + 居中衬线 | 高端酒店 / 晚宴 / 奢侈品活动 |
+| `pop-psychedelic` | 迷幻漩涡背景 + 中央胶囊信息区 + 阵容层级 | 音乐节阵容海报 / 潮流活动 |
+| `memphis` | 几何碎片拼贴 + 硬阴影标题块 + 案例卡 | 创意机构 / 青年品牌作品集 |
+| `big-type` | 满版巨字：实心 + 描边两行 + 底部色带宣言 | 品牌宣言 / 演讲开场 / 发布会金句 |
+
+**A6–A35 的检查与导出**：
 - `check_render.py` 会把 `fill="none"` 或 `opacity<1` 的装饰矩形（高光、斜面、缝线框）排除在"卡片"之外，不会误报溢出。
 - 这些风格包多为渐变或多色强调，**不要传 `--accent`**（面积检查只适用于纯色强调色的风格包）；改为看 PNG 目视确认强调不过量。
 - 导出 PPTX 时 PNG 回退由 rsvg 渲染，滤镜/渐变/模糊都会如实呈现；PowerPoint 对 SVG 滤镜支持有限，原生 SVG 层可能显示得比 PNG 简化，重要场合以 PNG 渲染效果为准、导出后在目标软件里打开检查。

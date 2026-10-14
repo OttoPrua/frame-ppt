@@ -51,11 +51,11 @@ Then just say: **`frame: a 10-page training deck on running good meetings`**
 ![consulting](docs/images/showcase-consulting.png)
 ![tech](docs/images/showcase-tech.png)
 
-**13 core style packs on the same slide** (full-size images in [docs/images/styles/](docs/images/styles/)), plus brand colors or a reference image
+**15 core style packs**, each shown with its own signature layout and a fitting theme (full-size images in [docs/images/styles/](docs/images/styles/)), plus brand colors or a reference image
 
 ![style packs](docs/images/style-gallery.png)
 
-**Industry & special packs**: 14 more for tech, gaming, IP/character and pixel-style decks (the mascot is an original placeholder you can swap for your own IP)
+**20 industry & trend packs**: tech & fintech, gaming, IP/character, art & trend (characters are original placeholders you can swap for your own IP; all brands and numbers in the examples are fictional)
 
 ![industry packs](docs/images/style-gallery-industry.png)
 

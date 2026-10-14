@@ -17,3 +17,6 @@ scripts/ 下的脚本为原创编写，未复制第三方源码。
 - rough-stuff/rough（MIT）https://github.com/rough-stuff/rough ：手绘抖动、双线描边、hachure 填充的视觉思路（sketch 用 SVG 滤镜原创实现）。
 - lewislulu/html-ppt-skill 的 blueprint、vaporwave 主题，以及 ui-ux-pro-max-skill styles.csv 的 Dashboard、HUD/Sci-Fi FUI、Pixel Art、Vaporwave、Y2K、Sketch Hand-Drawn 条目：配色与关键词参考。
 - 所有角色/吉祥物插画均为本项目原创 SVG 占位图，不含任何第三方 IP。
+- Apple Human Interface Guidelines（https://developer.apple.com/design/human-interface-guidelines/ ）：apple-hig 的设计原则与系统色参考，仅为文字与配色描述，未使用任何 Apple 素材或字体文件。
+- ui-ux-pro-max-skill styles.csv 的 3D & Hyperrealism、Soft UI Evolution、Y2K Aesthetic、Memphis Design、Kinetic Typography 条目：风格关键词与典型适用行业参考。
+- 所有示例页中的品牌、产品、人物、数据均为虚构；角色插画为本项目原创 SVG。
