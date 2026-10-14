@@ -183,7 +183,21 @@ python3 scripts/svg2pptx.py out.pptx svg/*.svg
 ---
 
 ## 附录 A：风格包
-共 13 个：A1 swiss · A2 apple-dark · A3 minimalism · A4 consulting · A5 tech-dark · A6 skeuo · A7 glass · A8 editorial · A9 material3 · A10 neumorphism · A11 claymorphism · A12 neo-brutalism · A13 aurora。不确定时：培训/通用选 swiss 或 minimalism；汇报/咨询选 consulting；发布会选 apple-dark；品牌故事选 editorial；年轻/活动选 claymorphism 或 neo-brutalism；科技产品选 tech-dark、glass 或 aurora。
+共 27 个。通用：A1 swiss · A2 apple-dark · A3 minimalism · A4 consulting · A5 tech-dark · A6 skeuo · A7 glass · A8 editorial · A9 material3 · A10 neumorphism · A11 claymorphism · A12 neo-brutalism · A13 aurora；行业与特色：A14–A27（见下）。
+
+**按场景 / 行业选风格包**：
+| 场景 | 推荐 |
+|---|---|
+| 培训、通用汇报 | swiss、minimalism、material3 |
+| 咨询、经营分析、周报 | consulting、dashboard |
+| 品牌故事、年度回顾 | editorial、skeuo |
+| 科技发布会 | apple-dark、saas-launch、glass、aurora |
+| 工程、研发、架构评审 | blueprint、tech-dark |
+| 游戏发行、版本更新 | game-hud、fantasy-rpg、gacha |
+| 电竞、赛事活动 | esports、neo-brutalism |
+| IP / 角色 / 二次元 | mascot、manga、kawaii-sticker、gacha |
+| 年轻化活动、社区 | claymorphism、kawaii-sticker、pixel-8bit |
+| 潮流、创意、文化 | vaporwave、risograph、sketch、neo-brutalism |
 每个风格包包含：调色板、图表配色、设计哲学、背景处理、装饰语言、颜色使用规则，以及该做和不该做的事。
 （风格包结构和 minimalism、consulting 两个预设 adapted from zhx47/ppt-agent (Apache-2.0)）
 
@@ -292,7 +306,48 @@ python3 scripts/svg2pptx.py out.pptx svg/*.svg
 - 强调：`#7DD3FC → #F0ABFC` 渐变用于大数字和短条。文字白 / `#CBD5E1`。
 - 不该做：极光饱和度过高压住文字、在浅色底上用。
 
-**A6–A13 的检查与导出**：
+### 行业与特色风格包（A14–A27）
+所有示例都在同一页金字塔内容上，见 `docs/images/styles/`。卡片骨架（结论卡 + 3 张要点卡）不变，只换皮。
+
+**科技行业**
+### A14 `saas-launch`：SaaS / AI 产品发布（浅色）
+- 底 `#FAFAFF` + 右上紫 `#A78BFA` 0.45、左下青 `#5EEAD4` 0.35 两个径向光；白卡 + `#E2E8F0` 描边 + 双层投影（近影 0.06 + 远影靛色 `#4F46E5` 0.10）；品牌渐变 `#6366F1 → #EC4899` 用于数字、短条、`✦ NEW · v2.0` 胶囊；结论卡 `#0F172A` 深色；要点卡右上放渐变 sparkline 折线（stroke 3，圆角端点）。与 apple-dark 的区别：浅色、产品官网感。
+### A15 `blueprint`：工程蓝图
+- 底 `#0B3A6F` + 40px 细网格（白 0.08）+ 200px 粗网格（白 0.16）；卡片白 0.05 填充 + `#BEDCFF` 虚线描边（`6 5`），四角黄铜色 `#FFD27A` 小圆定位点；卡片上方画尺寸标注线 + 等宽小字 "368 px"；卡内画十字瞄准圆；右下角图签框（项目名 / 图号）；标签等宽 `DWG-02 /`；数字细体等宽白色。
+### A16 `dashboard`：数据看板
+- 底 `#F3F4F6`；白卡圆角 12 + `#E5E7EB` 描边 + 极淡投影；每张要点卡一个环形进度（`stroke-dasharray` 按百分比，`rotate(-90)` 从顶部开始，圆角端点）+ 一条进度条，三色 `#2563EB / #10B981 / #F59E0B`；结论卡左侧 6px 蓝条 + 右侧柱状迷你图（最后一根深蓝高亮）；右上放 "2026 Q4 ▾" 筛选器。适合经营分析、周报。
+
+**游戏行业**
+### A17 `game-hud`：游戏 HUD / 科幻界面
+- 底 `#050A14` + 六边形网格 pattern（青 0.07）+ 四周暗角径向渐变；卡片为切角八边形（切 18），左上角发光折线（`feGaussianBlur 5` + merge）；结论卡橙色 `#F97316` 边框 + "QUEST ★ 主线任务"；要点卡加 EXP 经验条（橙→黄渐变）+ 右上菱形格子（等级）；页眉右侧 HP 条；数字 "01/02/03" 等宽发光青色。与 tech-dark 的区别：游戏化元素（血条、经验、任务）、橙青对撞。
+### A18 `esports`：电竞赛事
+- 底 `#0A0A0E` + 右侧 5 条斜向红色光带（透明度递增）；所有卡片为平行四边形（斜切 16）；结论卡红→橙渐变 `#FF1E3C → #FF7A1A`，背景大号斜体 "MVP" 0.22；要点卡顶部 8px 队伍色条，背后超大斜体 "#1" 0.05；标题、数字全部斜体 weight 900。
+### A19 `fantasy-rpg`：奇幻 RPG 面板
+- 底紫黑径向渐变 `#2A1E3A → #0D0912` + 60 个随机金色星点；卡片深紫渐变 + 金色渐变描边（`#F6E3A1 → #C9A24A → #8A6A22`）+ 内侧细金线；四角宝石菱形（不同颜色），顶边中央金条 + 宝石；标题居中衬线金色渐变 + 两侧装饰线；数字用罗马数字 Ⅰ Ⅱ Ⅲ。
+### A20 `gacha`：二次元抽卡
+- 底浅天蓝→浅粉渐变 + 散落四角星 sparkle；卡片外框按稀有度渐变（SSR 金粉 `#FFE29A → #FF7EB3`、SR 紫、R 蓝），内层白 0.92；右上稀有度字母（斜体渐变）+ ★ 星级；结论卡 SSR 渐变底 + "UP!" + 闪光；标签 "限定"。适合二次元游戏、活动运营。
+
+**IP / 角色友好**
+### A21 `mascot`：吉祥物 / IP 角色
+- 版式：右侧 372px 保留为 **IP 角色区**（圆角 32，`#FFE9CC` 底 + 浅色光圈），放角色 + 对话气泡（一句核心观点）；左侧 780px 放标准卡片骨架。
+- 示例角色是 SVG 原创占位（圆形身体、耳朵、腮红、描边 5px），**使用时替换为用户自己的 IP 素材**：把 PNG/SVG 放到项目 `assets/ip/`，用 `<image href="assets/ip/角色.png" x="904" y="140" width="300" height="360" preserveAspectRatio="xMidYMid meet"/>` 替换占位 `<g>`；导出时 svg2pptx 会一起渲染进 PNG 回退。只使用用户有权使用的素材。
+- 配色从角色主色取：本例 `#FF8A3D` 橙 + `#3A2A1A` 深棕描边 + `#FFF8EF` 底。
+### A22 `manga`：漫画分镜
+- 底网点纸 `#F5F2EA`；所有卡片是 4px 黑框分镜格，要点卡轻微旋转（±1°）显得手工；卡片右上角网点（halftone pattern，`circle r=2.2` 旋转 45°）；结论格右侧集中线（放射线 clip 在格内）+ 椭圆对白框 "结论！"；标题旁加拟声线条；数字粗斜体。角色立绘可放进单独一格。
+### A23 `kawaii-sticker`：可爱贴纸
+- 底 `#FFF5F9` + 粉色波点 + 爱心/四角星；卡片是"贴纸"：`feMorphology dilate 7` 生成白边 + 粉色柔投影，轻微旋转（±2°）；三色马卡龙 `#FFD1E3 / #D7F5E9 / #E3DBFF`，结论卡 `#FF6FA5`；每张卡右上一个原创小表情（白圆 + 眼睛 + 腮红），可替换成 IP 表情包。
+
+**特殊风格**
+### A24 `pixel-8bit`：像素 / 8-bit
+- 灵感来自 NES.css：像素边框（用两层错位矩形做出无圆角的"阶梯角"）+ 底部 6px 暗边；数字用 5×7 点阵字（每个像素 8px 方块）；像素爱心表示得分；标签黄色像素框 "LV.02"；底 `#F2F0E6` + 8px 点阵；主色 `#E76E55 / #92CC41 / #209CEE / #F7D51D`。不要用抗锯齿圆角和渐变。
+### A25 `vaporwave`：蒸汽波 / Y2K
+- 天空渐变 `#2B0F54 → #AB1F65 → #FF4F69`，条纹落日（黄→粉渐变圆被深色横条切开），地面透视网格（青 `#00F0FF` 0.55，横线按平方间距）；卡片是复古窗口：顶部彩色标题栏（`01.EXE`、三个方块按钮）+ 半透明深紫窗体；标题和数字用"铬"渐变（白→青 | 深紫→粉，中间硬分界）。
+### A26 `risograph`：孔版印刷
+- 纸色 `#FFFCF2`；专色荧光粉 `#FF48B0`、蓝 `#0078BF`、黄 `#FFE800`；两色叠印（`mix-blend-mode:multiply`）+ 3px 套色偏移（标题、数字各印两遍）；要点卡用另一专色做硬阴影；网点 pattern；最上层 `feTurbulence` 颗粒（0.15）。
+### A27 `sketch`：手绘草图
+- 灵感来自 Rough.js：横格笔记本底 + 左侧红色页边线；所有框用 `feTurbulence baseFrequency .03` + `feDisplacementMap scale 5` 做抖动，并画两遍（第二遍细一点、错位 2–3px）；斜线 hachure 填充（pattern 旋转 ±30°）；标题下手绘波浪下划线；数字外画圈。
+
+**A6–A27 的检查与导出**：
 - `check_render.py` 会把 `fill="none"` 或 `opacity<1` 的装饰矩形（高光、斜面、缝线框）排除在"卡片"之外，不会误报溢出。
 - 这些风格包多为渐变或多色强调，**不要传 `--accent`**（面积检查只适用于纯色强调色的风格包）；改为看 PNG 目视确认强调不过量。
 - 导出 PPTX 时 PNG 回退由 rsvg 渲染，滤镜/渐变/模糊都会如实呈现；PowerPoint 对 SVG 滤镜支持有限，原生 SVG 层可能显示得比 PNG 简化，重要场合以 PNG 渲染效果为准、导出后在目标软件里打开检查。
