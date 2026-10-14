@@ -1,66 +1,39 @@
-[English](README.md) | **简体中文**
+[English](README.md) | 简体中文
 
-# frame-ppt
+![frame-ppt](docs/images/readme/hero-zh.png)
 
-> 给 AI Agent 用的 PPT skill：说一句 `frame`，从一个想法做到一套能直接用的精美 PPT。
+![不是生成器，是搭档](docs/images/readme/highlight-zh.png)
 
-> [!IMPORTANT]
-> **它不是"一键生成页面"的工具。** frame 会和你一起把 PPT 想清楚：先用选择题问清需求，再用金字塔原理搭大纲，逐页和你确认内容，最后才出设计，交付可编辑、可直接上台的 PPT。
+**frame-ppt 和你一起把 PPT 的结构搭起来，不是一键出页面的生成器。** 它先问清你的需求，再用金字塔原理搭好大纲。每一页都等你确认之后，才出最终的设计稿。
 
-## 快速安装
+![工作流程](docs/images/readme/workflow-zh.png)
 
-把这句话发给你的 Agent（Claude Code、Hermes 等都可以）：
+![安装](docs/images/readme/install-zh.png)
 
-```text
-请从 https://github.com/ottoprua/frame-ppt 安装这个 skill 到你的 skills 目录。
+把下面这句话发给你的 Agent（Claude Code、Codex 等）：
+
+```
+帮我安装这个 PPT skill：https://github.com/ottoprua/frame-ppt
 ```
 
-或者手动装到 Claude Code：
+也可以手动安装：
 
 ```bash
 git clone https://github.com/ottoprua/frame-ppt.git ~/.claude/skills/frame-ppt
 ```
 
-装好后直接说：**`frame：做一套 10 页的"如何开好会"培训 PPT`**
+装好之后，对 Agent 说一句 **`frame`** 就能开始。
 
-## 效果展示
+![效果](docs/images/readme/results-zh.png)
 
-**流程：先搭框架，再出画面**
+33 个风格包，每个都有自己的典型版式和主题。图中的品牌和数据都是虚构的示例。
 
-<img src="docs/images/workflow.png" width="560" alt="工作流">
+![通用风格](docs/images/style-gallery.png)
 
-**成品示例（swiss 瑞士风）**
+![行业与潮流风格](docs/images/style-gallery-industry.png)
 
-![效果展示](docs/images/showcase.png)
+高清原图（3840×2160）可以在 Releases 下载。
 
-**初稿 → 设计稿**：骨架不变，只换皮
+---
 
-![初稿与设计稿](docs/images/draft-vs-final.png)
-
-**拟物风（skeuo）**
-
-![拟物风](docs/images/showcase-skeuo.png)
-
-**磨砂玻璃风（glass）**
-
-![磨砂玻璃风](docs/images/showcase-glass.png)
-
-**发布会深色（apple-dark）** · **咨询风（consulting）** · **科技暗色（tech-dark）**
-
-![apple](docs/images/showcase-apple.png)
-![consulting](docs/images/showcase-consulting.png)
-![tech](docs/images/showcase-tech.png)
-
-**15 个通用风格包**，每个都用自己的典型版式和主题做示例（单张大图在 [docs/images/styles/](docs/images/styles/)），也支持品牌色或参考图
-
-![风格包](docs/images/style-gallery.png)
-
-**20 个行业与潮流风格包**：科技金融、游戏、IP 角色、艺术潮流（角色为原创占位图，可替换成你自己的 IP；示例中的品牌和数据均为虚构）
-
-![行业风格包](docs/images/style-gallery-industry.png)
-
-导出：可编辑的 PPTX（每页内嵌 SVG，并附 PNG 回退），或单文件 HTML。
-
-## 致谢与许可
-
-[Apache-2.0](LICENSE)。部分规则和提示词改编自 [zhx47/ppt-agent](https://github.com/zhx47/ppt-agent)，详见 [NOTICE.md](NOTICE.md)。
+MIT License · 致谢与第三方许可见 [NOTICE.md](NOTICE.md)

@@ -1,66 +1,39 @@
-**English** | [简体中文](README.zh-CN.md)
+English | [简体中文](README.zh-CN.md)
 
-# frame-ppt
+![frame-ppt](docs/images/readme/hero-en.png)
 
-> A PPT skill for AI agents: say `frame` and go from a rough idea to a polished, ready-to-present deck.
+![Not a generator, a partner](docs/images/readme/highlight-en.png)
 
-> [!IMPORTANT]
-> **It's not a one-click page generator.** frame works *with* you to structure the deck: it asks multiple-choice questions about your needs, builds a pyramid-principle outline, reviews the content page by page with you, and only then designs, delivering an editable deck that's ready to present.
+**frame-ppt works with you to structure the deck. It is not a one-click page generator.** It asks about your brief first, then builds a pyramid-principle outline. Each page waits for your sign-off before the final design is produced.
 
-## Quick install
+![Workflow](docs/images/readme/workflow-en.png)
 
-Tell your agent (Claude Code, Hermes, or any agent with skills):
+![Install](docs/images/readme/install-en.png)
 
-```text
-Install the skill from https://github.com/ottoprua/frame-ppt into your skills folder.
+Paste this to your agent (Claude Code, Codex, etc.):
+
+```
+Install this PPT skill for me: https://github.com/ottoprua/frame-ppt
 ```
 
-Or install it manually for Claude Code:
+Or install it manually:
 
 ```bash
 git clone https://github.com/ottoprua/frame-ppt.git ~/.claude/skills/frame-ppt
 ```
 
-Then just say: **`frame: a 10-page training deck on running good meetings`**
+Then say **`frame`** to your agent to start.
 
-## What you get
+![Results](docs/images/readme/results-en.png)
 
-**Workflow: structure first, design last**
+There are 33 style packs, each with its own signature layout and theme. All brands and data in these images are fictional examples.
 
-<img src="docs/images/workflow.png" width="560" alt="workflow">
+![Core styles](docs/images/style-gallery.png)
 
-**Finished slides (swiss pack)**
+![Industry & trend styles](docs/images/style-gallery-industry.png)
 
-![showcase](docs/images/showcase.png)
+Full-resolution slides (3840×2160) are available in Releases.
 
-**Draft → design**: same skeleton, new skin
+---
 
-![draft vs final](docs/images/draft-vs-final.png)
-
-**Skeuomorphic (skeuo)**
-
-![skeuo](docs/images/showcase-skeuo.png)
-
-**Glassmorphism (glass)**
-
-![glass](docs/images/showcase-glass.png)
-
-**Apple dark** · **Consulting** · **Tech dark**
-
-![apple](docs/images/showcase-apple.png)
-![consulting](docs/images/showcase-consulting.png)
-![tech](docs/images/showcase-tech.png)
-
-**15 core style packs**, each shown with its own signature layout and a fitting theme (full-size images in [docs/images/styles/](docs/images/styles/)), plus brand colors or a reference image
-
-![style packs](docs/images/style-gallery.png)
-
-**20 industry & trend packs**: tech & fintech, gaming, IP/character, art & trend (characters are original placeholders you can swap for your own IP; all brands and numbers in the examples are fictional)
-
-![industry packs](docs/images/style-gallery-industry.png)
-
-Export: editable PPTX (each slide embeds its SVG with a PNG fallback) or a single-file HTML.
-
-## Credits & license
-
-[Apache-2.0](LICENSE). Parts of the rules and prompts are adapted from [zhx47/ppt-agent](https://github.com/zhx47/ppt-agent); see [NOTICE.md](NOTICE.md).
+MIT License · Credits and third-party notices in [NOTICE.md](NOTICE.md)
