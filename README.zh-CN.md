@@ -24,7 +24,7 @@ git clone https://github.com/ottoprua/frame-ppt.git ~/.claude/skills/frame-ppt
 
 ![流程](docs/images/readme/process-zh.png)
 
-下面这份 9 页的 PPT（封面 + 8 个步骤） 也是用 frame-ppt 做的，讲的是它怎么做 PPT：需求问答、资料消化、金字塔大纲、逐页简报、SVG 线框、套用风格包，最后检查并导出。单页大图在 [docs/images/process/zh](docs/images/process/zh)。
+下面这份 9 页的 PPT（封面 + 8 个步骤）也是用 frame-ppt 做的，讲的是它怎么做 PPT：需求问答、资料消化、金字塔大纲、逐页简报、SVG 线框、套用风格包，最后检查并导出。单页大图在 [docs/images/process/zh](docs/images/process/zh)。
 
 ![制作流程](docs/images/process/process-zh.png)
 
