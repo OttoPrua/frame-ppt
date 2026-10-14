@@ -7,3 +7,8 @@ scripts/ 下的脚本为原创编写，未复制第三方源码。
   backend/app/services/prompt_contracts.py、generation.py 与 docs/。
   Copyright © zhx47. Licensed under the Apache License, Version 2.0:
   http://www.apache.org/licenses/LICENSE-2.0  —— 已改写与翻译整合，非原样复制。
+
+## 风格包参考（仅借鉴思路，未复制代码）
+- lewislulu/html-ppt-skill（MIT）https://github.com/lewislulu/html-ppt-skill ：主题 token 结构（glassmorphism、blueprint、pitch-deck-vc、swiss-grid）。
+- anthropics/skills frontend-design（Apache-2.0）https://github.com/anthropics/skills/tree/main/skills/frontend-design ：背景要有氛围和层次、避免模板化默认审美。
+- courtsimas/glass-lens（MIT）https://github.com/courtsimas/glass-lens 、LeonardSEO/liquid-glass-react（MIT）https://github.com/LeonardSEO/liquid-glass-react 、dpawlikowski/liquid-glass（MIT）https://github.com/dpawlikowski/liquid-glass ：feDisplacementMap 折射、滤镜作用于背景副本、边缘色散。

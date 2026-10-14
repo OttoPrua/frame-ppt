@@ -21,7 +21,9 @@ def check(path, safe):
     vb = (root.get("viewBox") or "").split()
     if [x for x in vb] != ["0", "0", "1280", "720"]: errs.append(f"viewBox={root.get('viewBox')}")
     rects = []
+    in_defs = {id(e) for d in root.iter(NS + "defs") for e in d.iter()}  # defs/pattern/clipPath 里的形状不是卡片
     for r in root.iter(NS + "rect"):
+        if id(r) in in_defs: continue
         x, y, w, h = f(r.get("x")), f(r.get("y")), f(r.get("width")), f(r.get("height"))
         # 装饰层（高光、斜面、描边框）不算作卡片：fill=none 或 opacity<1
         if r.get("fill") == "none" or f(r.get("opacity"), 1) < 1: continue

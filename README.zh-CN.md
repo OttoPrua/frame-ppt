@@ -45,6 +45,12 @@ git clone https://github.com/ottoprua/frame-ppt.git ~/.claude/skills/frame-ppt
 
 ![磨砂玻璃风](docs/images/showcase-glass.png)
 
+**发布会深色（apple-dark）** · **咨询风（consulting）** · **科技暗色（tech-dark）**
+
+![apple](docs/images/showcase-apple.png)
+![consulting](docs/images/showcase-consulting.png)
+![tech](docs/images/showcase-tech.png)
+
 **7 个风格包**，也支持品牌色或参考图
 
 ![风格包](docs/images/style-packs.png)

@@ -45,6 +45,12 @@ Then just say: **`frame: a 10-page training deck on running good meetings`**
 
 ![glass](docs/images/showcase-glass.png)
 
+**Apple dark** · **Consulting** · **Tech dark**
+
+![apple](docs/images/showcase-apple.png)
+![consulting](docs/images/showcase-consulting.png)
+![tech](docs/images/showcase-tech.png)
+
 **7 style packs**, plus brand colors or a reference image
 
 ![style packs](docs/images/style-packs.png)
