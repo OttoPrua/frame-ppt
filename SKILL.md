@@ -16,6 +16,27 @@ description: >-
 - `tokens.py`：给 33 个风格包生成配色角色 token（tokens.json），可换品牌主色并自动修复对比度（见附录 D）。
 - `assets.py` / `genbg.py` / `recolor.py`：第 6.5 步素材委派（可选）：写提示词、生成背景、回填返回图并重着色到 tokens；预设在 `styles/asset-prompts.json`。
 
+## 安装 / 部署（给负责安装的 Agent 看）
+用户说「帮我安装这个 PPT skill：https://github.com/ottoprua/frame-ppt」之类的话时：
+1. 把仓库克隆或复制到本机的 skills 目录（例如 `~/.claude/skills/frame-ppt`）。
+2. **装好后必须在对话里问用户一次**，要不要给第 6.5 步的插画 / 具象槽位单独配一个生图模型。用选项来问：
+   > frame-ppt 装好了。第 6.5 步可以给 PPT 生成插画和主视觉，要不要单独配一个生图模型？
+   > A. OpenAI GPT Image / DALL·E（需要你自己的 API key，放在环境变量里）
+   > B. 本地 ComfyUI / Stable Diffusion WebUI（告诉我地址，例如 http://127.0.0.1:8188）
+   > C. 你已经在用的命令行工具（例如 Midjourney 或其他生图 CLI，告诉我命令）
+   > D. 交给另一个指定的 Agent 来生成（告诉我是哪个）
+   > E. 不配，先用本地（背景用本地生成器，插画位用内置 SVG，不产生任何费用）
+   
+   用户也可以说别的方案，照样记下来。
+3. 根据回答写 `config/image-provider.json`（相对 skill 根目录）。仓库里有模板 `config/image-provider.example.json`，这个文件已在 .gitignore 里，不会被提交。
+   - 选了 A–D 或其他方案时这样写，`kind` 取 `openai-image | comfyui | agent | cli | other`：
+     ```json
+     {"enabled": true, "kind": "openai-image", "notes": "用户说明，例如模型名、Agent 名", "command_or_endpoint": "接口地址 / 命令 / Agent 名", "secret_env": "OPENAI_API_KEY", "default_quality": "medium"}
+     ```
+   - **不要把 API key 写进这个文件，也不要编造 key。** 告诉用户把密钥放进环境变量（例如 `export OPENAI_API_KEY=…` 写进 shell 配置），文件里只记录变量名 `secret_env`。
+   - 选 E 或跳过时，写 `{"enabled": false}`，或者不写这个文件。**文件不存在或 `enabled: false` 都表示只用本地工具。**
+4. 以后用户说「给 frame-ppt 配生图模型」「换个生图模型」「关掉生图」时，重新问一遍上面的选项，然后改写这个文件。
+
 ---
 
 ## 第 0 步：建项目、判断输入输出
@@ -164,6 +185,9 @@ python3 scripts/tokens.py <风格包> --accent "#品牌主色" -o tokens.json   
 - 脚本会为每个槽位写 `requests/<slot>.json`（提示词、尺寸、透明 PNG、回写路径），并打印清单。
 
 **4. 派发**（按文件路径交接，不传图片内容）：
+- **派发任何具象 / 图标槽位之前，先读 `config/image-provider.json`（相对 skill 根目录）。**
+  - 文件不存在或 `enabled: false`：**不调用任何外部或付费生图模型。** 背景按 `generate` 用本地生成器，具象槽位直接用 `fallback`（内置 SVG）。项目中途可以问用户一次「要现在配生图模型吗？」（选项同安装时）；用户不要就不再问。
+  - `enabled: true`：按文件里的 `kind`、`command_or_endpoint`、`notes` 调用对应的工具或 Agent，密钥从 `secret_env` 指定的环境变量读取。
 - **付费图像 API 调用前，必须把清单（张数、尺寸、质量、预计费用和耗时）给用户确认。** 默认 `quality: medium`，先出一张定调图，用户满意后再出其余。
 - 交给其他代理时，任务只写一句「读取 `requests/<slot>.json`，按要求生成，写到 `write_to` 路径（先写 .tmp 再改名），同目录写 `<slot>.meta.json`（工具、模型、参数、许可说明）」。
 - 单张超时 3 分钟，最多重试 2 次（重试时附上次被拒原因），全部封顶 10 分钟。超时或失败不等待，直接走 fallback。

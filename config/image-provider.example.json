@@ -1,0 +1,8 @@
+{
+  "enabled": false,
+  "kind": "openai-image",
+  "notes": "示例模板：复制为 image-provider.json 后再改。kind 可选 openai-image | comfyui | agent | cli | other。密钥不要写在这里，放环境变量（如 OPENAI_API_KEY）。",
+  "command_or_endpoint": "",
+  "secret_env": "OPENAI_API_KEY",
+  "default_quality": "medium"
+}

@@ -22,6 +22,8 @@ git clone https://github.com/ottoprua/frame-ppt.git ~/.claude/skills/frame-ppt
 
 Then say **`frame`** to your agent to start.
 
+After installing, the agent will ask whether to connect a separate image-generation model for illustrations. If you skip it, frame-ppt uses its local generators and built-in SVG fallbacks and never calls paid APIs.
+
 ![Process](docs/images/readme/process-en.png)
 
 This 9-slide deck (a cover plus 8 steps) was made with frame-ppt, and it shows how frame-ppt builds a deck: brief Q&A, research digest, pyramid outline, page briefs, SVG wireframes, style packs, then checks and export. Full-size slides are in [docs/images/process/en](docs/images/process/en).
